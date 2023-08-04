@@ -1,36 +1,35 @@
-
 version: "3"
 services:
   strapi:
-  #   container_name: strapi
-  #   build: ./packages/service/.
-  #   image: strapi:latest
-  #   restart: unless-stopped
-  #   env_file: ./packages/service/.env
-  #   environment:
-  #     DATABASE_CLIENT: ${DATABASE_CLIENT}
-  #     DATABASE_HOST: strapiDB
-  #     DATABASE_PORT: ${DATABASE_PORT}
-  #     DATABASE_NAME: ${DATABASE_NAME}
-  #     DATABASE_USER: ${DATABASE_USER}
-  #     DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-  #     JWT_SECRET: ${JWT_SECRET}
-  #     ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
-  #     APP_KEYS: ${APP_KEYS}
-  #     NODE_ENV: ${NODE_ENV}
-  #   volumes:
-  #     - ./config:/opt/app/config
-  #     - ./src:/opt/app/src
-  #     - ./package.json:/opt/package.json
-  #     - ./yarn.lock:/opt/yarn.lock
-  #     - ./.env:/opt/app/.env
-  #     - ./public/uploads:/opt/app/public/uploads
-  #   ports:
-  #     - "1337:1337"
-  #   networks:
-  #     - strapi
-  #   depends_on:
-  #     - strapiDB
+    container_name: strapi
+    build: ./packages/service/.
+    image: strapi:latest
+    restart: unless-stopped
+    env_file: ./packages/service/.env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: strapiDB
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./config:/opt/app/config
+      - ./src:/opt/app/src
+      - ./package.json:/opt/package.json
+      - ./yarn.lock:/opt/yarn.lock
+      - ./.env:/opt/app/.env
+      - ./public/uploads:/opt/app/public/uploads
+    ports:
+      - "1337:1337"
+    networks:
+      - strapi
+    depends_on:
+      - strapiDB
 
   db:
     container_name: db
@@ -40,12 +39,12 @@ services:
     env_file: ./.env
     image: mysql
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     volumes:
-      -  ./data:/var/lib/mysql
+      - ./data:/var/lib/mysql
       #- ./data:/var/lib/mysql # if you want to use a bind folder
     ports:
       - "3306:3306"
