@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "start": "cross-env VUE_APP_SERVER='http://localhost:1337' vue-cli-service serve",
-    "start:prod": "cross-env VUE_APP_SERVER='https://optica-oz.ru/api' vue-cli-service serve --mode production",
+    "start:prod": "cross-env VUE_APP_SERVER='https://optica-oz.ru' vue-cli-service serve --mode production",
     "build": "cross-env VUE_APP_SERVER='http://localhsot:1337'  vue-cli-service build --mode development",
-    "build:tunnel": "cross-env VUE_APP_SERVER='https://optica-oz.ru/api'  vue-cli-service build --mode development",
-    "build:prod": "cross-env VUE_APP_SERVER='https://optica-oz.ru/api'  vue-cli-service build --mode production",
+    "build:tunnel": "cross-env VUE_APP_SERVER='https://optica-oz.ru'  vue-cli-service build --mode development",
+    "build:prod": "cross-env VUE_APP_SERVER='https://optica-oz.ru'  vue-cli-service build --mode production",
     "android": "npx cap sync && npx cap run android",
     "android:prod": "npx cap sync && npx cap run android",
     "test:unit": "vue-cli-service test:unit",
