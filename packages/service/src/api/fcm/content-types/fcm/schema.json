@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fcms",
+  "info": {
+    "singularName": "fcm",
+    "pluralName": "fcms",
+    "displayName": "FCM",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "token": {
+      "type": "string",
+      "required": true,
+      "column": {
+        "unique": true
+      }
+    },
+    "userId": {
+      "type": "integer",
+      "required": true
+    },
+    "device": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

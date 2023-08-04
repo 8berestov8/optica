@@ -1,0 +1,34 @@
+{
+    "kind": "collectionType",
+    "collectionName": "types",
+    "info": {
+        "singularName": "type",
+        "pluralName": "types",
+        "displayName": "Type",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "text"
+        },
+        "products": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product",
+            "mappedBy": "type"
+        },
+        "categories": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::categorie.categorie",
+            "mappedBy": "type"
+        }
+    }
+}

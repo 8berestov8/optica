@@ -1,0 +1,32 @@
+{
+  "name": "optika-oz",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
+  "scripts": {
+    "push": "git add ./ && git commit -m 'auto' && git push",
+    "strapi:develop": "cd packages/service && yarn develop",
+    "strapi:start": "cd packages/service && yarn strapi start",
+    "strapi:build": "cd packages/service && yarn strapi build",
+    "strapi": "cd packages/service && yarn strapi",
+    "postinstall": "cd packages/service && yarn install && cd ../../packages/app && yarn install",
+    "start": "cd packages/app && yarn start",
+    "start:prod": "cd packages/app && yarn start:prod",
+    "build": "cd packages/app && yarn build",
+    "build:prod": "cd packages/app && yarn build:prod",
+    "android": "cd packages/app && yarn android",
+    "android:prod": "cd packages/app && yarn android:prod"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "18b837ab-dd38-4add-b0c4-d1d5f86412ab"
+  },
+  "engines": {
+    "node": ">=12.x.x <=18.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT",
+  "packageManager": "yarn@3.6.0"
+}

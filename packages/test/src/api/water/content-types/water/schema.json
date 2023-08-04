@@ -1,0 +1,25 @@
+{
+    "kind": "collectionType",
+    "collectionName": "waters",
+    "info": {
+        "singularName": "water",
+        "pluralName": "waters",
+        "displayName": "Water",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "products": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::product.product",
+            "inversedBy": "waters"
+        }
+    }
+}

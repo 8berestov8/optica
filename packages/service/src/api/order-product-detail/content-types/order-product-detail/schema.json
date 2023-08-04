@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "order_product_details",
+  "info": {
+    "singularName": "order-product-detail",
+    "pluralName": "order-product-details",
+    "displayName": "Order Product Detail",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "order_product_details"
+    },
+    "radius": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::radius.radius",
+      "inversedBy": "order_product_details"
+    },
+    "sphere": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sphere.sphere",
+      "inversedBy": "order_product_details"
+    },
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "order_product_details"
+    },
+    "product_count": {
+      "type": "integer"
+    },
+    "product_amount": {
+      "type": "integer"
+    },
+    "product_discount": {
+      "type": "integer"
+    }
+  }
+}

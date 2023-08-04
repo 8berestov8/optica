@@ -1,0 +1,48 @@
+{
+    "kind": "collectionType",
+    "collectionName": "doctors",
+    "info": {
+        "singularName": "doctor",
+        "pluralName": "doctors",
+        "displayName": "Doctor",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "name": {
+            "type": "string"
+        },
+        "phone": {
+            "type": "string"
+        },
+        "email": {
+            "type": "email"
+        },
+        "avatar": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images",
+                "files",
+                "videos",
+                "audios"
+            ]
+        },
+        "optica": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::optica.optica",
+            "inversedBy": "doctors"
+        },
+        "appointments": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::appointment.appointment",
+            "mappedBy": "doctor"
+        }
+    }
+}

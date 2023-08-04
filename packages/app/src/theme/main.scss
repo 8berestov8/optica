@@ -1,0 +1,47 @@
+html, body {
+  --background: #dedede;
+  font-family: Montserrat !important;
+  font-weight: 400;
+}
+
+ion-title, ion-label {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+ion-content {
+  --background: #ecebeb
+}
+
+ion-toolbar {
+  --background: #ffffff;
+}
+
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0;
+}
+
+ion-col {
+  padding: 0;
+}
+
+ion-spinner {
+  color: #005944;
+}
+
+ion-refresher ion-refresher-content .refresher-refreshing .refresher-refreshing-icon ion-spinner {
+  color: #005944;
+}
+
+.label-text-wrapper {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 15px;
+  color: #bbbbbb;
+  margin-top: 10px;
+}
+
+ion-toast.error {
+  --background: red;
+  --color: #ffffff;
+}

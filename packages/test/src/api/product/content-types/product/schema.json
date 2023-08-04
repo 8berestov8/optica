@@ -1,0 +1,129 @@
+{
+    "kind": "collectionType",
+    "collectionName": "products",
+    "info": {
+        "singularName": "product",
+        "pluralName": "products",
+        "displayName": "Product",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "price": {
+            "type": "string"
+        },
+        "image": {
+            "type": "media",
+            "multiple": true,
+            "required": false,
+            "allowedTypes": [
+                "images",
+                "files",
+                "videos",
+                "audios"
+            ]
+        },
+        "brand": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::brand.brand",
+            "inversedBy": "products"
+        },
+        "manufacturer": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::manufacturer.manufacturer",
+            "inversedBy": "products"
+        },
+        "material": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::material.material",
+            "inversedBy": "products"
+        },
+        "diameter": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::diameter.diameter",
+            "inversedBy": "products"
+        },
+        "short_title": {
+            "type": "string"
+        },
+        "discount": {
+            "type": "string"
+        },
+        "period": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::period.period",
+            "inversedBy": "products"
+        },
+        "radius": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::radius.radius",
+            "inversedBy": "products"
+        },
+        "sphere": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::sphere.sphere",
+            "inversedBy": "products"
+        },
+        "type": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::type.type",
+            "inversedBy": "products"
+        },
+        "order_product_details": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::order-product-detail.order-product-detail",
+            "mappedBy": "product"
+        },
+        "adds": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::add.add",
+            "mappedBy": "products"
+        },
+        "cylinders": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::cylinder.cylinder",
+            "mappedBy": "products"
+        },
+        "axes": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::axis.axis",
+            "mappedBy": "products"
+        },
+        "dominants": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::dominant.dominant",
+            "mappedBy": "products"
+        },
+        "waters": {
+            "type": "relation",
+            "relation": "manyToMany",
+            "target": "api::water.water",
+            "mappedBy": "products"
+        },
+        "categorie": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::categorie.categorie",
+            "inversedBy": "products"
+        }
+    }
+}

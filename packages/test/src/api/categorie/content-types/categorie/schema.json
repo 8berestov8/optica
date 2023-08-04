@@ -1,0 +1,66 @@
+{
+    "kind": "collectionType",
+    "collectionName": "categories",
+    "info": {
+        "singularName": "categorie",
+        "pluralName": "categories",
+        "displayName": "Categorie",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "image": {
+            "type": "media",
+            "multiple": true,
+            "required": false,
+            "allowedTypes": [
+                "images",
+                "files",
+                "videos",
+                "audios"
+            ]
+        },
+        "title": {
+            "type": "string"
+        },
+        "products": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::product.product",
+            "mappedBy": "categorie"
+        },
+        "period": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::period.period",
+            "inversedBy": "categories"
+        },
+        "type": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::type.type",
+            "inversedBy": "categories"
+        },
+        "brand": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::brand.brand",
+            "inversedBy": "categories"
+        },
+        "price": {
+            "type": "string"
+        },
+        "discount": {
+            "type": "string"
+        },
+        "delivery": {
+            "type": "richtext"
+        },
+        "description": {
+            "type": "richtext"
+        }
+    }
+}

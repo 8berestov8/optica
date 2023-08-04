@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Оптика ОЗ</string>
+    <string name="title_activity_main">Оптика ОЗ</string>
+    <string name="package_name">a.berestov.test</string>
+    <string name="custom_url_scheme">a.berestov.test</string>
+</resources>

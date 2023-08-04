@@ -1,0 +1,8 @@
+{
+  "name": "lens-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "948f0181"
+}
