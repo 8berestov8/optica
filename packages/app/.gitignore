@@ -33,3 +33,5 @@ npm-debug.log*
 /www
 .env
 package-lock.json
+.env.development
+.env.production
