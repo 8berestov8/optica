@@ -1,0 +1,10 @@
+.tmp/
+.cache/
+.git/
+.dist/
+etc/
+usr/
+build/
+dist/
+node_modules/
+data/

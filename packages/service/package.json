@@ -11,10 +11,10 @@
   },
 
   "dependencies": {
-    "@strapi/plugin-i18n": "=4.5.1",
-    "@strapi/plugin-users-permissions": "=4.5.1",
-    "@strapi/strapi": "=4.5.1",
-    "@strapi/typescript-utils": "^4.11.4",
+    "@strapi/plugin-i18n": "^4.12.1",
+    "@strapi/plugin-users-permissions": "^4.12.1",
+    "@strapi/strapi": "^4.12.1",
+    "@strapi/typescript-utils": "^4.12.1",
     "@types/luxon": "^3.3.0",
     "axios": "^1.2.5",
     "cp-cli": "^2.0.0",
