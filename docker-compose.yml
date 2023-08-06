@@ -6,7 +6,7 @@ services:
     build: ./packages/service/.
     image: dunadigital/strapi-docker:latest
     restart: unless-stopped
-    env_file: ./packages/service/.env
+    env_file: .env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
       DATABASE_HOST: ${MYSQL_DATABASE_HOST}
@@ -37,7 +37,7 @@ services:
     container_name: mysqlDB
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password
-    env_file: ./packages/service/.env
+    env_file: .env
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - optika-strapi
   adminer:
