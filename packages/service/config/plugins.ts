@@ -1,9 +1,9 @@
 'use strict'
 
 export default {
-  'optika-import': {
+  /*'optika-import': {
     enabled: false,
     resolve: './src/plugins/optika-import'
-  },
+  },*/
 
 }
