@@ -58,9 +58,18 @@ export default factories.createCoreService('api::push.push', ({strapi})=> ({
         const tokens = fcms.map(f => f.token)
       console.log('FCM found '+ tokens.join('\n\r'))
 
-     const response = await (strapi as any).sendPush.messaging().sendMulticast({
-        notification: {title, body},
-        tokens
+     const response = await (strapi as any).sendPush.messaging().sendEachForMulticast({
+        notification:{
+            title, body
+        },
+        apns: {
+          payload: {
+            aps: {
+              sound: "default",
+            },
+          },
+        },
+        tokens,
       })
       console.log('sendPush result', response)//response.successCount + ' messages were sent successfully')
     }
