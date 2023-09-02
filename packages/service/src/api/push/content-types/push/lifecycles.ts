@@ -34,7 +34,7 @@ module.exports = {
           if(tokens.length) {
             console.log("Broadcast "+title+" "+body+" for "+tokens.length+" devices")
             try {
-            const result = await    fireAdmin.messaging().sendMulticast({
+            const result = await fireAdmin.messaging().sendMulticast({
                 notification: {
                   body,
                   title
