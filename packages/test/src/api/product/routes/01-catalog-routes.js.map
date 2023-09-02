@@ -1,1 +1,0 @@
-{"version":3,"file":"01-catalog-routes.js","sourceRoot":"","sources":["../../../../../src/api/product/routes/01-catalog-routes.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,OAAO,GAAG;IACf,MAAM,EAAG;QACP;YACE,MAAM,EAAE,KAAK;YACb,IAAI,EAAE,mBAAmB;YACzB,OAAO,EAAE,2BAA2B;YACpC,MAAM,EAAE;gBACN,IAAI,EAAE,KAAK;aACZ;SACF;KACF;CACF,CAAA"}

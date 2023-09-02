@@ -1,1 +1,0 @@
-{"version":3,"file":"01-product-relations.js","sourceRoot":"","sources":["../../../../../src/api/categorie/routes/01-product-relations.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,GAAG;IACf,MAAM,EAAG;QACP;YACE,MAAM,EAAE,KAAK;YACb,IAAI,EAAE,+BAA+B;YACrC,OAAO,EAAE,uCAAuC;YAChD,MAAM,EAAE;gBACN,IAAI,EAAE,KAAK;aACZ;SACF;KACF;CACF,CAAA"}
