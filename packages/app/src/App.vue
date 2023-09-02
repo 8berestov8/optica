@@ -14,6 +14,7 @@ import {
 import { defineComponent } from 'vue';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+import { pushNotifications } from './notifications';
 
 export default defineComponent({
   name: 'App',
@@ -80,17 +81,18 @@ export default defineComponent({
     },
   },
   async mounted() {
-   const list = [
+    pushNotifications.OnInit();
+    const list = [
       this.getCategories(),
       this.getPeriod(),
       this.getSphere(),
       this.getRadius(),
-     this.getTypes(),
-     this.getAdds(),
-     this.getAxes(),
-     this.getCylinders(),
-     this.getDominants(),
-    ]
+      this.getTypes(),
+      this.getAdds(),
+      this.getAxes(),
+      this.getCylinders(),
+      this.getDominants(),
+    ];
     /*
     await this.getCategories();
     await this.getPeriod();
@@ -103,7 +105,7 @@ export default defineComponent({
     await this.getDominants();
 */
 
-    await Promise.all(list)
+    await Promise.all(list);
     if (!isPlatform('mobileweb')) {
       try {
         await StatusBar.setStyle({ style: Style.Light });

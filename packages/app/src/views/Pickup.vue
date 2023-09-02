@@ -84,7 +84,7 @@
       <CardInfo
         :title="$t('DATE-RECEIVING')"
         :icon="handlerIconCalendar"
-        description="16 октября - ориентировочная дата получения. Мы дополнительно сообщим вам о доставке."
+        :description="handlerDate"
       />
 
       <CardInfo
@@ -195,6 +195,7 @@ import {checkFields, clearFields, checkFieldsAddress} from "@/helpers/from";
 import {sendOrderDetails, sendOrder} from "@/api/order";
 import {updateAddress} from "@/api/address";
 import {formatDate} from "@/helpers/formatter";
+import moment from 'moment';
 
 
 export default {
@@ -233,6 +234,7 @@ export default {
     return {
       handler: 'left',
       loading: false,
+      date: new Date(),
       address: {
         id: '',
         street: '',
@@ -271,6 +273,10 @@ export default {
     },
     handlerUser() {
       return this.user
+    },
+    handlerDate() {
+      return this.handler === 'left' ? `${moment(this.date).add(1, 'days').format('DD.MM.YYYY')} -
+        ${this.$t('TEXT-DELIVERY')}` : `${moment(this.date).add(2, 'days').format('DD.MM.YYYY')} - ${this.$t('TEXT-DELIVERY')}`
     }
   },
   watch: {

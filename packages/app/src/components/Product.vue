@@ -197,6 +197,12 @@ export default defineComponent({
   }
 }
 
+.swiper-pagination {
+  .swiper-pagination-bullet {
+    background: gray !important;
+  }
+}
+
 @media (max-width: 360px) {
   #product-card {
     width: 145px;

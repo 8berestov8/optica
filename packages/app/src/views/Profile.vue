@@ -1,7 +1,7 @@
 <template>
   <ion-page id="profile">
-    <Header :title="$t('PROFILE')" contact/>
-    <Loading v-if="loading"/>
+    <Header :title="$t('PROFILE')" contact />
+    <Loading v-if="loading" />
     <Content v-if="!loading" @refresh="refresh">
       <ion-card class="contact" v-if="token">
         <ion-card-content class="content">
@@ -9,21 +9,21 @@
             <ion-item>
               <ion-row class="user-info">
                 <ion-label
-                    class="user-name"
-                    style="display: flex; align-items: center"
-                >{{ `${user.firstname} ${user.lastname}` }}
+                  class="user-name"
+                  style="display: flex; align-items: center"
+                  >{{ `${user.firstname} ${user.lastname}` }}
                   <ion-buttons>
                     <ion-button
-                        @click="
+                      @click="
                         $router.push({
                           name: 'EditProfile',
                         })
                       "
                     >
                       <ion-icon
-                          size="small"
-                          slot="icon-only"
-                          icon="assets/icon/edit.svg"
+                        size="small"
+                        slot="icon-only"
+                        icon="assets/icon/edit.svg"
                       ></ion-icon>
                     </ion-button>
                   </ion-buttons>
@@ -38,14 +38,14 @@
               <ion-row class="item-row">
                 <ion-col class="icon-col">
                   <ion-icon
-                      icon="assets/icon/my-order.svg"
-                      class="ion-margin-end icon"
+                    icon="assets/icon/my-order.svg"
+                    class="ion-margin-end icon"
                   ></ion-icon>
                 </ion-col>
                 <ion-col
-                    class="text-col ion-justify-content-between ion-align-items-center"
-                    style="display: flex"
-                    @click="$router.push({ name: 'OrderHistory' })"
+                  class="text-col ion-justify-content-between ion-align-items-center"
+                  style="display: flex"
+                  @click="$router.push({ name: 'OrderHistory' })"
                 >
                   <ion-label class="text">{{ $t('MY-ORDERS') }}</ion-label>
                   <ion-icon icon="assets/icon/arrow.svg"></ion-icon>
@@ -56,14 +56,14 @@
               <ion-row class="item-row">
                 <ion-col class="icon-col">
                   <ion-icon
-                      icon="assets/icon/my-record.svg"
-                      class="ion-margin-end icon"
+                    icon="assets/icon/my-record.svg"
+                    class="ion-margin-end icon"
                   ></ion-icon>
                 </ion-col>
                 <ion-col
-                    class="text-col ion-justify-content-between ion-align-items-center"
-                    style="display: flex"
-                    @click="$router.push({ name: 'RecordHistory' })"
+                  class="text-col ion-justify-content-between ion-align-items-center"
+                  style="display: flex"
+                  @click="$router.push({ name: 'RecordHistory' })"
                 >
                   <ion-label class="text">{{ $t('MY-VISITS') }}</ion-label>
                   <ion-icon icon="assets/icon/arrow.svg"></ion-icon>
@@ -74,7 +74,7 @@
         </ion-card-content>
       </ion-card>
 
-      <Address :title="$t('OPTICS-ADDRESS')"/>
+      <Address :title="$t('OPTICS-ADDRESS')" />
 
       <ion-card class="contact">
         <ion-card-content class="content">
@@ -87,16 +87,16 @@
               <ion-row class="item-row">
                 <ion-col class="icon-col">
                   <ion-icon
-                      icon="assets/icon/call-profile.svg"
-                      class="icon"
+                    icon="assets/icon/call-profile.svg"
+                    class="icon"
                   ></ion-icon>
                 </ion-col>
                 <ion-col class="text-col">
                   <a
-                      href="tel:+79502822722"
-                      class="ion-margin-start text"
-                      style="color: #17a1fa"
-                  >{{ $t('PHONE') }}</a
+                    href="tel:+79502822722"
+                    class="ion-margin-start text"
+                    style="color: #17a1fa"
+                    >{{ $t('PHONE') }}</a
                   >
                 </ion-col>
               </ion-row>
@@ -106,14 +106,14 @@
               <ion-row class="item-row">
                 <ion-col class="icon-col">
                   <ion-icon
-                      icon="assets/icon/message-profile.svg"
-                      class="ion-margin-end icon"
+                    icon="assets/icon/message-profile.svg"
+                    class="ion-margin-end icon"
                   ></ion-icon>
                 </ion-col>
                 <ion-col
-                    class="text-col ion-justify-content-between ion-align-items-center"
-                    style="display: flex"
-                    @click="chat"
+                  class="text-col ion-justify-content-between ion-align-items-center"
+                  style="display: flex"
+                  @click="chat"
                 >
                   <ion-label class="text">{{ $t('WRITE-TO-CHAT') }}</ion-label>
                   <ion-icon icon="assets/icon/arrow.svg"></ion-icon>
@@ -129,28 +129,26 @@
           <ion-label class="text-no-auth">{{ $t('PROFILE-TEXT') }}</ion-label>
         </ion-row>
         <Button
-            :title="$t('TO-ENTER')"
-            class="auth-button"
-            @click="
+          :title="$t('TO-ENTER')"
+          class="auth-button"
+          @click="
             $router.push({ name: 'Auth', params: { redirect: 'Profile' } })
           "
         />
       </ion-row>
 
       <ion-row
-          class="ion-margin-bottom ion-margin ion-justify-content-between"
-          v-if="token"
+        class="ion-margin-bottom ion-margin ion-justify-content-between"
+        v-if="token"
       >
         <ion-buttons>
-          <ion-button class="logout-button" @click="logout">{{
-              $t('LOGOUT')
-            }}
+          <ion-button class="logout-button" @click="logout"
+            >{{ $t('LOGOUT') }}
           </ion-button>
         </ion-buttons>
         <ion-buttons>
-          <ion-button class="delete-button" @click="presentAlert(user.id)">{{
-              $t('DELETE-ACCOUNT')
-            }}
+          <ion-button class="delete-button" @click="presentAlert(user.id)"
+            >{{ $t('DELETE-ACCOUNT') }}
           </ion-button>
         </ion-buttons>
       </ion-row>
@@ -159,7 +157,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
 import {
   IonPage,
   IonCard,
@@ -172,16 +170,17 @@ import {
   IonItem,
   IonButtons,
   IonButton,
-  alertController
+  alertController,
 } from '@ionic/vue';
 import Header from '@/components/ui/Header.vue';
 import Content from '@/components/ui/Content.vue';
 import Button from '@/components/ui/Button.vue';
-import {mapActions, mapGetters, mapMutations} from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Loading from '@/components/ui/Loading.vue';
 import Address from '@/components/Address.vue';
-import {formatPhone} from '../helpers/formatter';
-import {removeUser} from "@/api/user";
+import { formatPhone } from '../helpers/formatter';
+import { removeUser } from '@/api/user';
+import { pushNotifications } from '../notifications';
 
 export default defineComponent({
   name: 'Profile',
@@ -206,7 +205,7 @@ export default defineComponent({
   data() {
     return {
       loading: false,
-      isOpenAlert: false
+      isOpenAlert: false,
     };
   },
   computed: {
@@ -214,6 +213,7 @@ export default defineComponent({
   },
   methods: {
     formatPhone,
+
     ...mapMutations(['SET_TOKEN', 'SET_USER']),
     ...mapActions(['getUser']),
     chat() {
@@ -221,23 +221,23 @@ export default defineComponent({
       win.location = 'https://wa.me/79502822722';
     },
     async logout() {
+      pushNotifications.unsubscribeFrom(this.user.id);
       this.SET_TOKEN('');
       localStorage.removeItem('jwt');
       localStorage.removeItem('user');
     },
     async remove(id: any) {
-      this.loading = true
-      await removeUser(id)
-      localStorage.removeItem('user')
-      localStorage.removeItem('jwt')
-      this.SET_TOKEN('')
-      this.SET_USER({})
-      this.loading = false
-      this.$router.replace({name: 'Profile'})
+      this.loading = true;
+      await removeUser(id);
+      localStorage.removeItem('user');
+      localStorage.removeItem('jwt');
+      this.SET_TOKEN('');
+      this.SET_USER({});
+      this.loading = false;
+      this.$router.replace({ name: 'Profile' });
     },
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    async refresh(complete = () => {
-    }) {
+    async refresh(complete = () => {}) {
       try {
         await this.getUser(this.user.id);
       } finally {
@@ -253,15 +253,15 @@ export default defineComponent({
             text: this.$t('CANCEL'),
             role: 'cancel',
             handler: () => {
-              console.log('cancel')
+              console.log('cancel');
             },
           },
           {
             text: this.$t('OK'),
             role: 'confirm',
             handler: () => {
-              console.log('ok')
-              this.remove(id)
+              console.log('ok');
+              this.remove(id);
             },
           },
         ],
@@ -269,7 +269,7 @@ export default defineComponent({
 
       await alert.present();
       await alert.onDidDismiss();
-    }
+    },
   },
   async mounted() {
     this.loading = true;

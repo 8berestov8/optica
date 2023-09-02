@@ -4,7 +4,7 @@
     <ion-content :scroll-y="false" id="check-sms">
       <ion-list class="list">
         <ion-row class="ion-margin">
-          <ion-label class="text">{{ $t('SMS-TITLE') }}</ion-label>
+          <ion-label class="text">{{ $t('EMAIL-CHECK-TITLE') }}</ion-label>
         </ion-row>
         <ion-row>
           <ion-item lines="none" class="input-item">

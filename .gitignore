@@ -163,3 +163,5 @@ front-workspace.code-workspace
 usr/share/nginx/html
 .env
 !/.env.production
+packages/app/.env.development
+packages/app/.env.production

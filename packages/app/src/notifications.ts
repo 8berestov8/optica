@@ -1,60 +1,34 @@
 import { PushNotifications } from '@capacitor/push-notifications';
-import {UserInterfase} from '@/interfaces/UserInterfase'
-import {addFCMToken} from '@/api/user'
-import {Platform} from 'cordova-res/dist/platform'
-import {Capacitor} from '@capacitor/core'
-import {Device} from '@capacitor/device'
+import { addFCMToken } from '@/api/user';
+import { Capacitor } from '@capacitor/core';
+import { Device } from '@capacitor/device';
+import { FCM } from '@capacitor-community/fcm';
+import { UserInterfase } from './interfaces/UserInterfase';
 
-
-let currentUser: UserInterfase
-
-let registered = false
-
-const handleToken = async (token: {value: string}, device = 'Unknown') => {
-    console.info('Registration token: ', token.value);
-  console.log('User '+currentUser.id+' joined via Native device with token '+token.value)
-
-  if(currentUser) {
-      const call = async () => {
-        const result = await addFCMToken(token.value, device, currentUser)
-        console.log(`User ${currentUser.id} updated fcm token `+result)
+export const pushNotifications = {
+  OnInit() {
+    try {
+      if (Capacitor.getPlatform() !== 'web') {
+        this.registerPush();
       }
-      call()
+    } catch (e) {
+      console.error(e);
     }
+  },
 
-}
-const addListeners = async () => {
-  registered = true
-  if(!Capacitor.isNativePlatform()) {
-     const info = await Device.getInfo();
-    const value = 'TOKEN'
-    console.log('User '+currentUser.id+' joined via browser with token '+value)
-    await handleToken({value},JSON.stringify(info) )
-  } else {
-    await PushNotifications.addListener('registration', handleToken);
+  async handleToken(user: UserInterfase) {
+    const info = await Device.getInfo();
+    if (Capacitor.getPlatform() !== 'web') {
+      FCM.getToken()
+        .then(async (r) => await addFCMToken(r.token, info.platform, user))
+        .catch((err) => console.error(err));
+    } else {
+      await addFCMToken('TOKEN', info.platform, user);
+    }
+  },
 
-    await PushNotifications.addListener('registrationError', err => {
-      console.error('Registration error: ', err.error);
-    });
-
-    await PushNotifications.addListener('pushNotificationReceived', notification => {
-      console.log('Push notification received: ', notification);
-    });
-
-    await PushNotifications.addListener('pushNotificationActionPerformed', notification => {
-      console.log('Push notification action performed', notification.actionId, notification.inputValue);
-    });
-  }
-}
-
-export const registerNotifications = async (user: UserInterfase) => {
-  currentUser = user
-  if(!registered)
-    await addListeners()
-
-  if(Capacitor.isNativePlatform()) {
+  async registerPush() {
     let permStatus = await PushNotifications.checkPermissions();
-
     if (permStatus.receive === 'prompt') {
       permStatus = await PushNotifications.requestPermissions();
     }
@@ -62,12 +36,58 @@ export const registerNotifications = async (user: UserInterfase) => {
     if (permStatus.receive !== 'granted') {
       throw new Error('User denied permissions!');
     }
-
+    this.addListeners();
     await PushNotifications.register();
-  }
-}
+  },
+  async addListeners() {
+    PushNotifications.addListener('registrationError', (error) => {
+      // eslint-disable-next-line
+      console.error('Error: ' + JSON.stringify(error));
+    });
+  },
 
-const getDeliveredNotifications = async () => {
-  const notificationList = await PushNotifications.getDeliveredNotifications();
-  console.log('delivered notifications', notificationList);
-}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async addListenernReceive(
+    done = (_i: any) => {
+      console.log(_i);
+    }
+  ) {
+    PushNotifications.addListener(
+      'pushNotificationReceived',
+      async (notification) => {
+        done(notification);
+      }
+    );
+  },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async addListenerActionPerformed(
+    done = (_i: any) => {
+      console.log(_i);
+    }
+  ) {
+    PushNotifications.addListener(
+      'pushNotificationActionPerformed',
+      async (notification) => {
+        const { data } = notification.notification;
+        done(data);
+      }
+    );
+  },
+
+  async subscribeTo(userId: any) {
+    const topic = `user${userId}`;
+    FCM.subscribeTo({ topic })
+      .then(() => console.log(`subscribed to topic “${topic}”`))
+      .catch((err) => console.error(err));
+  },
+  async unsubscribeFrom(userId: any) {
+    const topic = `user${userId}`;
+    FCM.unsubscribeFrom({ topic })
+      .then(() => console.log(`unsubscribe from topic “${topic}”`))
+      .catch((err) => console.error(err));
+  },
+
+  async setReadedAllNotifications() {
+    PushNotifications.removeAllDeliveredNotifications();
+  },
+};

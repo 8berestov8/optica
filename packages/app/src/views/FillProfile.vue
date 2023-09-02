@@ -146,7 +146,7 @@ export default defineComponent({
   },
   mounted() {
     this.fields = {
-      id: this.user.id,
+      id: this.user?.id,
       firstname: this.user.firstname,
       lastname: this.user.lastname,
       patronymic: this.user.patronymic,
