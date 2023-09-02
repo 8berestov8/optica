@@ -271,4 +271,15 @@ export default defineComponent({
     margin-bottom: 40px;
   }
 }
+
+.swiper-pagination {
+  bottom: 0 !important;
+  .swiper-pagination-bullet {
+    background: gray !important;
+  }
+}
+
+.swiper-horizontal > .swiper-pagination-bullets {
+  bottom: 0 !important;
+}
 </style>
