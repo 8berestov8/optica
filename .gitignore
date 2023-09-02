@@ -161,7 +161,7 @@ front-workspace.code-workspace
 !.yarn/versions
 
 usr/share/nginx/html
+.env.production
 .env
-!/.env.production
 packages/app/.env.development
 packages/app/.env.production
