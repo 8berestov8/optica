@@ -165,3 +165,4 @@ usr/share/nginx/html
 .env
 packages/app/.env.development
 packages/app/.env.production
+packages/service/yarn.lock

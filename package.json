@@ -12,8 +12,8 @@
     "postinstall": "cd packages/service && npm install && cd ../../packages/app && npm install",
     "start": "cd packages/app && npm start",
     "start:prod": "cd packages/app && npm start:prod",
-    "build": "cd packages/app && npm build",
-    "build:prod": "cd packages/app && npm build:prod",
+    "build": "cd packages/app && npm run build",
+    "build:prod": "cd packages/app && npm run build:prod",
     "android": "cd packages/app && npm android",
     "android:prod": "cd packages/app && npm android:prod"
   },
