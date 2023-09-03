@@ -211,8 +211,8 @@ export const getProduct = async (
             id: Number(i.id),
             url: process.env.VUE_APP_SERVER + i.attributes.url,
             thumbnailUrl:
-              process.env.VUE_APP_SERVER +
-                i.attributes.formats.thumbnail.url ?? '',
+              process.env.VUE_APP_SERVER + i.attributes.formats.thumbnail.url ??
+              '',
             alternativeText: '',
             caption: '',
           });
@@ -381,8 +381,8 @@ export const getProductById = async (
             id: Number(i.id),
             url: process.env.VUE_APP_SERVER + i.attributes.url,
             thumbnailUrl:
-              process.env.VUE_APP_SERVER +
-                i.attributes.formats.thumbnail.url ?? '',
+              process.env.VUE_APP_SERVER + i.attributes.formats.thumbnail.url ??
+              '',
             alternativeText: '',
             caption: '',
           });
@@ -528,7 +528,6 @@ export const getCharacteristics = async (
     // params include
 
     paramString = qs.stringify({
-      
       pagination: {
         pageSize: 100,
       },
@@ -709,6 +708,87 @@ export const filterProducts = async (
           period: period.title,
           radius: radius,
           sphere: sphere,
+          type: type.title,
+          categorie: categorie.id,
+        });
+      });
+    }
+
+    return products;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const searchProducts = async (
+  params?: any
+): Promise<Product[] | undefined> => {
+  try {
+    // empty paramstring
+    let paramString = '';
+    // params include
+    if (params) {
+      paramString = qs.stringify({
+        populate: 'image',
+        filters: {
+          title: {
+            $containsi: params,
+          },
+        },
+        // pagination: {
+        //   pageSize: 100,
+        // },
+        encodeValuesOnly: true,
+      });
+    }
+
+    const products: Product[] = [];
+    const response = await API.get(`/products?${paramString}`);
+
+    if (response.data) {
+      // console.log(response.data);
+      response.data.map((p: any) => {
+        //extract images
+        const images: Image[] = [];
+
+        // if Product has images map to Image Interface
+        if (Object.hasOwnProperty.call(p.attributes, 'image')) {
+          const img = p.attributes.image.data ?? [];
+          img.map((i: any) => {
+            images.push({
+              id: Number(i.id),
+              url: process.env.VUE_APP_SERVER + i.attributes.url,
+              thumbnailUrl:
+                process.env.VUE_APP_SERVER +
+                  i.attributes.formats.thumbnail.url ?? '',
+              alternativeText: '',
+              caption: '',
+            });
+          });
+        }
+
+        // if Product has manufacturer map to Sphere Interface
+        const type: Type = { id: 0, title: '', description: '' };
+        if (Object.hasOwnProperty.call(p.attributes, 'type')) {
+          const m = p.attributes.type.data;
+          type.id = m?.id;
+          type.title = m?.attributes.title;
+          type.description = m?.attributes.description;
+        }
+        // if Product has manufacturer map to Sphere Categorie
+        const categorie = { id: 0 };
+        if (Object.hasOwnProperty.call(p.attributes, 'categorie')) {
+          const m = p.attributes.categorie.data;
+          categorie.id = m?.id;
+        }
+
+        products.push({
+          id: p.id,
+          title: p.attributes.title,
+          short_title: p.attributes.short_title,
+          price: p.attributes.price,
+          discount: p.attributes.discount,
+          image: images,
           type: type.title,
           categorie: categorie.id,
         });

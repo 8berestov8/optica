@@ -18,6 +18,7 @@ export const pushNotifications = {
 
   async handleToken(user: UserInterfase) {
     const info = await Device.getInfo();
+    console.log(info);
     if (Capacitor.getPlatform() !== 'web') {
       FCM.getToken()
         .then(async (r) => await addFCMToken(r.token, info.platform, user))

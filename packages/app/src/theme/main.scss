@@ -1,16 +1,18 @@
-html, body {
+html,
+body {
   --background: #dedede;
   font-family: Montserrat !important;
   font-weight: 400;
 }
 
-ion-title, ion-label {
+ion-title,
+ion-label {
   font-size: 12px;
   font-weight: 400;
 }
 
 ion-content {
-  --background: #ecebeb
+  --background: #ecebeb;
 }
 
 ion-toolbar {
@@ -29,7 +31,11 @@ ion-spinner {
   color: #005944;
 }
 
-ion-refresher ion-refresher-content .refresher-refreshing .refresher-refreshing-icon ion-spinner {
+ion-refresher
+  ion-refresher-content
+  .refresher-refreshing
+  .refresher-refreshing-icon
+  ion-spinner {
   color: #005944;
 }
 

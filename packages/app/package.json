@@ -15,7 +15,7 @@
     "lint": "vue-cli-service lint",
     "dev": "vue-cli-service build --mode development && npx cap sync",
     "prod": "vue-cli-service build --mode production && npx cap sync",
-    "dev-ios": "vue-cli-service build && npx cap sync && npx cap run ios",
+    "dev-ios": "vue-cli-service build --mode production && npx cap sync && npx cap run ios",
     "android-live": "ionic capacitor run android --livereload --external --mode production"
   },
   "devDependencies": {

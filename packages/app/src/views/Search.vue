@@ -70,6 +70,7 @@ import Header from '@/components/ui/Header.vue';
 import Info from '@/components/ui/Info.vue';
 import {mapGetters} from "vuex";
 import Button from "@/components/ui/Button.vue";
+import {searchProducts} from '@/api/products'
 
 export default defineComponent({
   name: 'Search',
@@ -90,6 +91,7 @@ export default defineComponent({
   data() {
     return {
       search: '',
+      products: []
     };
   },
   mounted() {
@@ -99,17 +101,23 @@ export default defineComponent({
     ...mapGetters(['products', 'categories']),
     onProducts() {
       return this.search.length
-          ? this.categories.filter((categorie) =>
-          categorie.title.toLowerCase().includes(this.search.toLowerCase()) || categorie.short_title.toLowerCase().includes(this.search.toLowerCase())
-          )
+          ? this.searchProducts()
           : this.categories;
     },
+
   },
   methods: {
     update() {
       this.$router.push({name: 'Catalog'});
       this.search = '';
     },
+    searchProducts() {
+      searchProducts(this.search).then((data)=> {
+        console.log(data);
+         this.products = data
+      })
+      return this.products
+    }
   },
 });
 </script>

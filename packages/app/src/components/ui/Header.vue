@@ -23,10 +23,10 @@
           <ion-icon icon="assets/icon/location.svg" class="icon-svg" />
         </ion-button>
         <ion-button @click="call">
-          <ion-icon icon="assets/icon/call.svg" />
+          <ion-icon icon="assets/icon/call.svg" class="icon-svg" />
         </ion-button>
         <ion-button @click="chat">
-          <ion-icon icon="assets/icon/message.svg" />
+          <ion-icon icon="assets/icon/message.svg" class="icon-svg" />
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
@@ -123,5 +123,10 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .icon-svg {
+    height: 25px;
+    width: 25px;
+  }
 }
 </style>
