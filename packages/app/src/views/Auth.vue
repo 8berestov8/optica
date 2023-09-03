@@ -152,7 +152,7 @@ export default defineComponent({
       });
 
       localStorage.setItem('phone', phone);
-      localStorage.setItem('email', phone);
+      localStorage.setItem('email', this.email);
     },
   },
   mounted() {

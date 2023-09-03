@@ -72,7 +72,7 @@ export default defineComponent({
       repeat: false,
       currentTime: 60,
       timer: null,
-      value: process.env.NODE_ENV === 'development' ? '778899': '',
+      value: process.env.NODE_ENV === 'development' ? '778899' : '',
     };
   },
   watch: {
@@ -97,7 +97,8 @@ export default defineComponent({
     },
     async handleOnComplete(value) {
       const phone = localStorage.getItem('phone');
-      await this.checkSmsCode({ phone, message: value });
+      const email = localStorage.getItem('email');
+      await this.checkSmsCode({ phone, email, msg: value });
       this.handlerRoute();
     },
     handlerRoute() {
@@ -117,11 +118,13 @@ export default defineComponent({
         });
       }
 
-      if (this.redirect === 'Profile' &&
-          this.token &&
-          this.user.firstname &&
-          this.user.lastname &&
-          this.user.patronymic) {
+      if (
+        this.redirect === 'Profile' &&
+        this.token &&
+        this.user.firstname &&
+        this.user.lastname &&
+        this.user.patronymic
+      ) {
         this.$router.replace({ name: this.redirect });
       } else {
         this.$router.replace({
@@ -135,7 +138,8 @@ export default defineComponent({
       this.startTimer();
       this.repeat = false;
       const phone = localStorage.getItem('phone');
-      this.sendPhone({ phone });
+      const email = localStorage.getItem('email');
+      this.sendPhone({ phone, email });
     },
     startTimer() {
       this.timer = setInterval(() => {
