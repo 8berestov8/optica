@@ -29,7 +29,7 @@ export default {
     ctx.body = {status: 200, message: 'ok'}
   },
   fcm: async (ctx, next) => {
-    const {token, device, userId} = ctx.request.body.data;
+    const {token, device, userId} = ctx.request.body;
     console.info('ctx',ctx.request.body,{token, device, userId})
     const previousFcm = await strapi.db.query('api::fcm.fcm').findOne({
       where:{
@@ -44,7 +44,7 @@ export default {
         }})
     } else {
       const fcmItem = {
-        device:'device', userId, token
+        device, userId, token
       }
       console.log('fcmItem',fcmItem)
       const result = await strapi.entityService.create('api::fcm.fcm', {data:fcmItem})
@@ -63,10 +63,10 @@ export default {
       settings.email_confirmation = false
       settings.unique_email = false
 
-      const phone = ctx.request.body.phone
+      const {phone, email} = ctx.request.body
 
-      // return if without body.phone
-      if (!phone) {
+      // return if without phone or email
+      if (!phone || !email) {
         throw new ValidationError('This request is not allowed!')
       }
 
@@ -80,7 +80,7 @@ export default {
       // find user if exists
       let user = await strapi
         .query('plugin::users-permissions.user')
-        .findOne({where: {phone}, populate: ['role']})
+        .findOne({where: {email, phone}, populate: ['role']})
 
       if (await user) {
         // update user
@@ -102,6 +102,7 @@ export default {
         const newUser = {
           role: role.id,
           phone: phone,
+          email: email,
           password: msg,
           resetPasswordToken: null,
           confirmed: false,
@@ -112,7 +113,7 @@ export default {
 
       //send message to provider
       const providerResponse = phone !== '77778888888' ?
-        await sendMessageToProvider(phone, msg)
+        await sendMessageToProvider(user, msg)
       : 'OK';
 
       ctx.body = {status: 200, message: providerResponse}
@@ -126,11 +127,10 @@ export default {
 
     try {
 
-      const phone = ctx.request.body.phone
-      const msg = ctx.request.body.message
+      const {phone, email, msg} = ctx.request.body
 
       // return if without body.phone
-      if (!phone) {
+      if (!phone || !email) {
         throw new ValidationError('This request is not allowed!')
       }
       // validate the message
