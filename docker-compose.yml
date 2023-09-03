@@ -59,4 +59,5 @@ services:
       - optika-strapi
 networks:
   optika-strapi:
+    #external: true
     driver: bridge
