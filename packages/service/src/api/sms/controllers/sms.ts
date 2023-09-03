@@ -29,7 +29,7 @@ export default {
     ctx.body = {status: 200, message: 'ok'}
   },
   fcm: async (ctx, next) => {
-    const {token, device, userId} = ctx.request.body;
+    const {token, device, userId} = ctx.request.body.data;
     console.info('ctx',ctx.request.body,{token, device, userId})
     const previousFcm = await strapi.db.query('api::fcm.fcm').findOne({
       where:{

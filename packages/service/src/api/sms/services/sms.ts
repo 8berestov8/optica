@@ -27,8 +27,8 @@ module.exports = () => ({
       subject: 'Your verification code',
       text: `Please verify <%= email %>
     Verification Code : <%= message %>.`,
-      html: `<h1>Please verify <%= email %></h1>
-    <p>Verification Code: <strong><%= message %></strong>.<p>`,
+      html: `<h3>Please verify <%= email %></h3>
+    <p>Verification Code: <h1><%= message %></h1>.<p>`,
     };
 
     try {
