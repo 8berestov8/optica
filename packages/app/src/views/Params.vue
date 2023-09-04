@@ -57,7 +57,10 @@
           <ion-col
             style="padding-left: 0"
             v-if="adds.length"
-            :class="{ axAddClass: isAdd }"
+            :class="[
+              { axAddClass: isAdd },
+              axes.length ? 'ion-margin-end' : '',
+            ]"
           >
             <ion-title class="text">{{ $t('ADDS') }}</ion-title>
             <Select
@@ -183,7 +186,10 @@
           <ion-col
             style="padding-left: 0"
             v-if="adds.length"
-            :class="{ axAddClassTwo: isAddTwo }"
+            :class="[
+              { axAddClassTwo: isAddTwo },
+              axes.length ? 'ion-margin-end' : '',
+            ]"
           >
             <ion-title class="text">{{ $t('ADDS') }}</ion-title>
             <Select
@@ -430,15 +436,13 @@ export default defineComponent({
           product_discount: discountPrice(product.price, product.discount ?? 0) * this.countOne
         };
 
-        const products = []
-        products.push(product);
-
-        this.SET_PRODUCTS(products)
+        this.SET_PRODUCTS(product)
         this.SET_ORDER_PRODUCT_DETAILS(a);
         this.SET_BASKET_COUNT();
         this.SET_TOTAL_AMOUNT();
         this.SET_TOTAL_DISCOUNT();
-        this.$router.replace({name: 'Basket'})
+        this.$router.replace({ name: 'Basket' });
+
       } else if (this.different && !this.checkSelect() && !this.checkSelectTwo()) {
         const product = await this.getProduct({
           categorie: this.id,
@@ -488,11 +492,8 @@ export default defineComponent({
           product_discount: discountPrice(productTwo.price, productTwo.discount ?? 0) * this.countOne
         };
 
-        const products = []
-        products.push(product);
-        products.push(productTwo);
-
-        this.SET_PRODUCTS(products)
+        this.SET_PRODUCTS(product)
+        this.SET_PRODUCTS(productTwo)
         this.SET_ORDER_PRODUCT_DETAILS(a);
         this.SET_ORDER_PRODUCT_DETAILS(b);
         this.SET_BASKET_COUNT();

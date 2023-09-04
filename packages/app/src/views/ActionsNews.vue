@@ -4,18 +4,20 @@
     <ion-content :fullscreen="true">
       <div class="wrapper">
         <div class="image-box">
-          <img src="assets/image/action.png" class="image" />
+          <img :src="item.url" class="image" />
         </div>
         <div class="text-box">
           <div class="header">
             <ion-icon icon="assets/icon/sale.svg" class="icon" />
             <p class="title">
-              {{ $t('ACTION-TITLE') }}
+              {{ item.title }}
+              <!-- {{ $t('ACTION-TITLE') }} -->
             </p>
           </div>
 
           <span class="description">
-            {{ $t('ACTION-DESCRIPTION') }}
+            {{ item.description }}
+            <!-- {{ $t('ACTION-DESCRIPTION') }} -->
           </span>
         </div>
 
@@ -40,6 +42,7 @@ import { defineComponent } from 'vue';
 import { IonContent, IonPage, IonIcon, IonRow } from '@ionic/vue';
 import Header from '@/components/ui/Header.vue';
 import Button from '@/components/ui/Button.vue';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'ActionsNews',
@@ -50,6 +53,29 @@ export default defineComponent({
     Header,
     IonIcon,
     IonRow,
+  },
+  data() {
+    return {
+      item: {
+        title: '',
+        description: '',
+        url: '',
+      },
+    };
+  },
+  computed: {
+    ...mapGetters(['actions_news']),
+    id() {
+      return this.$route.params.id;
+    },
+  },
+  methods: {
+    async handlerActionNews() {
+      this.item = await this.actions_news.find((an: any) => an.id == this.id);
+    },
+  },
+  mounted() {
+    this.handlerActionNews();
   },
 });
 </script>

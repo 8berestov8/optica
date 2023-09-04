@@ -106,8 +106,8 @@ export default defineComponent({
   },
   data() {
     return {
-      phone: process.env.NODE_ENV === 'development' ? '77778888888' : '',
-      email: '',
+      phone: localStorage.getItem('phone') ? localStorage.getItem('phone') : '',
+      email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
       msgEmail: false,
       msgPhone: false,
     };
@@ -117,7 +117,12 @@ export default defineComponent({
       return this.$route.params.redirect;
     },
     disabled() {
-      return !this.msgEmail && !this.msgPhone ? false : true;
+      return this.phone.length === 18 &&
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          this.email
+        )
+        ? false
+        : true;
     },
   },
   methods: {
@@ -150,9 +155,8 @@ export default defineComponent({
         name: 'CheckSms',
         params: { redirect: this.redirect },
       });
-
-      localStorage.setItem('phone', phone);
       localStorage.setItem('email', this.email);
+      localStorage.setItem('phone', phone);
     },
   },
   mounted() {

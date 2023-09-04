@@ -19,7 +19,7 @@ export interface Product {
   ax?: Array<Axes>;
   dominant?: Array<Dominants>;
   type?: string;
-  categorie?: number;
+  categorie?: number | string;
 }
 
 // Image Interface to use in Frontend

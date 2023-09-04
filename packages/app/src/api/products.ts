@@ -729,15 +729,15 @@ export const searchProducts = async (
     // params include
     if (params) {
       paramString = qs.stringify({
-        populate: 'image',
+        populate: ['image', 'categorie', 'type'],
         filters: {
           title: {
-            $containsi: params,
+            $containsi: params.search,
           },
         },
-        // pagination: {
-        //   pageSize: 100,
-        // },
+        pagination: {
+          page: params.page,
+        },
         encodeValuesOnly: true,
       });
     }
@@ -775,22 +775,23 @@ export const searchProducts = async (
           type.title = m?.attributes.title;
           type.description = m?.attributes.description;
         }
+
         // if Product has manufacturer map to Sphere Categorie
-        const categorie = { id: 0 };
+        const categorie = { title: '' };
         if (Object.hasOwnProperty.call(p.attributes, 'categorie')) {
           const m = p.attributes.categorie.data;
-          categorie.id = m?.id;
+          categorie.title = m?.attributes.title;
         }
 
         products.push({
           id: p.id,
-          title: p.attributes.title,
+          title: categorie.title,
           short_title: p.attributes.short_title,
           price: p.attributes.price,
           discount: p.attributes.discount,
           image: images,
           type: type.title,
-          categorie: categorie.id,
+          categorie: categorie.title,
         });
       });
     }

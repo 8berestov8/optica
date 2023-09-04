@@ -15,11 +15,11 @@
         @click="$router.replace({ name: 'Recording' })"
       />
       <Card
+        slider
         class="pressed"
         :title="$t('ACTION-CARD-TITLE')"
-        img="assets/image/actions_news.png"
-        @click="$router.push({ name: 'ActionsNews' })"
-        v-if="false"
+        :slider_data="actions_news"
+        @open-slide="toActionNews"
       />
     </ion-content>
   </ion-page>
@@ -30,10 +30,26 @@ import { defineComponent } from 'vue';
 import { IonPage, IonContent } from '@ionic/vue';
 import Header from '@/components/ui/Header.vue';
 import Card from '@/components/ui/Card.vue';
+import { mapActions, mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'Home',
   components: { Card, Header, IonContent, IonPage },
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters(['actions_news']),
+  },
+  methods: {
+    ...mapActions(['getActionsNews']),
+    toActionNews(id: any) {
+      this.$router.push({ name: 'ActionsNews', params: { id: id } });
+    },
+  },
+  mounted() {
+    this.getActionsNews();
+  },
 });
 </script>
 

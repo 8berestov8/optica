@@ -104,6 +104,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: PATH_ACTIONS_NEWS,
     name: 'ActionsNews',
+    props: true,
     component: () => import('@/views/ActionsNews.vue'),
   },
   {

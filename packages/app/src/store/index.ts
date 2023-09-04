@@ -11,6 +11,8 @@ import { saveAddress, getAddress } from '@/api/address';
 import { getDoctor } from '@/api/recording';
 import { getCategories } from '@/api/categories';
 import { Categorie } from '@/interfaces/CategorieInterface';
+import { ActionNew } from '@/interfaces/ActionsNews';
+import { getActionsNews } from '@/api/actions_news';
 
 const modules = {};
 
@@ -63,6 +65,7 @@ const store = createStore({
     doctor: {},
     order_history: [],
     loading: false,
+    actions_news: Array<ActionNew>(),
   },
   getters: {
     popover: (state) => state.popover,
@@ -94,13 +97,14 @@ const store = createStore({
     doctor: (state) => state.doctor,
     previous_recording: (state) => state.previous_recording,
     loading: (state) => state.loading,
+    actions_news: (state) => state.actions_news,
   },
   mutations: {
     SET_POPOVER: (state, payload) => (state.popover = payload),
     SET_ERROR: (state, payload) => (state.error = payload),
     SET_FILTER: (state, payload) => (state.filter = payload),
     SET_CATEGORIES: (state, payload) => (state.categories = payload),
-    SET_PRODUCTS: (state, payload) => (state.products = payload),
+    SET_PRODUCTS: (state, payload: Product) => state.products.push(payload),
     SET_ORDER_PRODUCT_DETAILS: (state, payload: OrderProductDetails) =>
       state.basket.order_product_details.push(payload),
     SET_ORDER_PRODUCT_DETAILS_FULL: (state, payload) =>
@@ -140,6 +144,7 @@ const store = createStore({
     SET_PREVIOUS_RECORDING: (state, payload) =>
       (state.previous_recording = payload),
     SET_LOADING: (state, payload) => (state.loading = payload),
+    SET_ACTIONS_NEWS: (state, payload) => (state.actions_news = payload),
   },
   actions: {
     setError(context, error) {
@@ -322,10 +327,8 @@ const store = createStore({
       return new Promise((resolve, reject) => {
         checkSms(params)
           .then((data) => {
-            debugger
             context.commit('SET_USER', data);
             context.commit('SET_TOKEN', localStorage.getItem('jwt'));
-            localStorage.removeItem('phone');
             resolve(data);
           })
           .catch((e) => {
@@ -394,9 +397,18 @@ const store = createStore({
           console.error(e);
         });
     },
+
+    async getActionsNews(context: any) {
+      getActionsNews()
+        .then((data) => {
+          context.commit('SET_ACTIONS_NEWS', data);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    },
   },
   modules,
 });
 
-export default store
-
+export default store;
