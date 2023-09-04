@@ -24,11 +24,11 @@ module.exports = () => ({
     }*/
 
     const emailTemplate = {
-      subject: 'Your verification code',
+      subject: 'Your verification code <%= message %>',
       text: `Please verify <%= email %>
-    Verification Code : <%= message %>.`,
+        Verification Code : <%= message %>.`,
       html: `<h3>Please verify <%= email %></h3>
-    <p>Verification Code: <h1><%= message %></h1>.<p>`,
+        <p>Verification Code: <h1><%= message %></h1><p>`,
     };
 
     try {
