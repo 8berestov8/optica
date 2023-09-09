@@ -1,6 +1,6 @@
 <template>
   <ion-page id="order-recording">
-    <ion-content :scroll-y="false">
+    <Content scroll>
       <div class="vector">
         <img src="assets/icon/check.svg" />
       </div>
@@ -22,33 +22,42 @@
           <ion-row class="ion-margin description">{{ handlerTime }}</ion-row>
           <ion-row class="ion-margin description">{{ handlerDoctor }}</ion-row>
           <ion-row class="ion-margin description">{{
-            `г. ${handlerOpticAddress.city}, ул. ${handlerOpticAddress.street}, ${handlerOpticAddress.number} пом. ${handlerOpticAddress.apartment}`
+            `г. ${handlerOpticAddress.city}, ул. ${handlerOpticAddress.street}, ${handlerOpticAddress.number}`
           }}</ion-row>
         </ion-col>
       </div>
 
-      <ion-row class="ion-justify-content-center button-wrapper">
-        <Button :title="$t('TO-MAIN')" class="button" @click="toRecording" />
-      </ion-row>
-    </ion-content>
+      <ion-grid :fixed="true" class="button-container">
+        <ion-row class="ion-align-items-end ion-justify-content-between">
+          <ion-col class="align-self-end">
+            <Button
+              :title="$t('TO-MAIN')"
+              class="button"
+              @click="toRecording"
+            />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </Content>
   </ion-page>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
-import { IonPage, IonContent, IonCol, IonRow } from '@ionic/vue';
-import { mapGetters, mapMutations } from 'vuex';
+import { IonPage, IonCol, IonRow } from '@ionic/vue';
+import { mapGetters } from 'vuex';
 import { formatDate } from '@/helpers/formatter';
 import Button from '@/components/ui/Button.vue';
+import Content from '@/components/ui/Content.vue';
 
 export default defineComponent({
   name: 'OrderRecording',
   components: {
     Button,
     IonPage,
-    IonContent,
     IonCol,
     IonRow,
+    Content,
   },
   computed: {
     ...mapGetters(['date', 'time', 'doctor', 'optic_address']),
@@ -67,13 +76,8 @@ export default defineComponent({
   },
   methods: {
     formatDate,
-    ...mapMutations(['SET_PREVIOUS_RECORDING']),
     toRecording() {
       this.$router.replace({ name: 'Recording' });
-      this.SET_PREVIOUS_RECORDING({
-        date: this.handlerDate,
-        time: this.handlerTime,
-      });
     },
   },
 });
@@ -129,8 +133,7 @@ export default defineComponent({
     }
   }
 
-  .button-wrapper {
-    width: 100%;
+  .button-container {
     bottom: 60px;
     position: absolute;
 

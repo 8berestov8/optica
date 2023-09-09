@@ -78,6 +78,7 @@ export const getCategories = async (): Promise<Categorie[] | undefined> => {
           type: type.title,
           discount: p.attributes.discount,
           delivery: p.attributes.delivery,
+          categorie_id: p.id,
         });
       });
     }

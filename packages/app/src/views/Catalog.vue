@@ -1,9 +1,16 @@
 <template>
-  <ion-page>
+  <ion-page id="catalog">
     <Header :title="$t('CATALOG')" />
     <Loading :is-open="loading" v-if="loading" />
-    <Content @refresh="refresh" v-if="!loading">
-      <div class="container" style="margin: 5px">
+    <Content @refresh="refresh" v-if="!loading" scroll>
+      <Info
+        v-if="!onProducts.length"
+        icon="assets/icon/empty.svg"
+        :title="$t('SEARCH-EMPTY')"
+        :description="$t('FILTER-EMPTY-DESCRIPTION')"
+        @update="close"
+      />
+      <div class="container" style="margin: 5px" v-if="onProducts.length">
         <ion-row class="ion-nowrap ion-justify-content-between search">
           <ion-searchbar
             class="search"
@@ -80,67 +87,21 @@
           />
         </ion-row>
 
-        <div
-          class="wrapper"
-          v-if="
-            !(
-              filter.period.length ||
-              filter.type.length ||
-              Object.keys(filter.sphere).length ||
-              Object.keys(filter.radius).length ||
-              Object.keys(filter.add).length ||
-              Object.keys(filter.ax).length ||
-              Object.keys(filter.cylinder).length ||
-              Object.keys(filter.dominant).length
-            )
-          "
-        >
+        <div class="wrapper">
           <Product
-            v-for="categorie in categories"
-            :key="categorie.id"
-            :title="categorie.title"
-            :price="categorie.price"
-            :img="categorie.image"
-            :discount="categorie.discount"
-            :type="categorie.type"
-            class="product"
-            @click="
-              $router.push({
-                name: 'Categorie',
-                params: {
-                  id: categorie.id,
-                },
-              })
-            "
-          />
-        </div>
-
-        <div
-          class="wrapper"
-          v-if="
-            filter.period.length ||
-            filter.type.length ||
-            Object.keys(filter.sphere).length ||
-            Object.keys(filter.radius).length ||
-            Object.keys(filter.add).length ||
-            Object.keys(filter.ax).length ||
-            Object.keys(filter.cylinder).length ||
-            Object.keys(filter.dominant).length
-          "
-        >
-          <Product
-            v-for="product in products"
+            v-for="product in onProducts"
             :key="product.id"
-            :short_title="product.short_title"
+            :title="product.short_title ? product.short_title : product.title"
             :price="product.price"
             :img="product.image"
             :discount="product.discount"
+            :type="product.type"
             class="product"
             @click="
               $router.push({
                 name: 'Categorie',
                 params: {
-                  id: product.categorie,
+                  id: product.categorie_id,
                 },
               })
             "
@@ -148,6 +109,12 @@
         </div>
       </div>
       <FilterModal :show="isFilter" @hide="hide" />
+      <Button
+        :title="$t('TO-CATALOG')"
+        v-if="!onProducts.length"
+        class="catalog-button"
+        @click="closeInfo"
+      />
     </Content>
   </ion-page>
 </template>
@@ -169,6 +136,8 @@ import FilterElement from '@/components/FilterElement.vue';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Content from '@/components/ui/Content.vue';
 import Loading from '@/components/ui/Loading.vue';
+import Info from '@/components/ui/Info.vue';
+import Button from '@/components/ui/Button.vue';
 
 export default defineComponent({
   name: 'Catalog',
@@ -185,6 +154,8 @@ export default defineComponent({
     IonButton,
     IonButtons,
     IonSearchbar,
+    Info,
+    Button,
   },
   data() {
     return {
@@ -192,7 +163,21 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters(['filter', 'products', 'loading', 'categories']),
+    ...mapGetters(['filter', 'filter_products', 'loading', 'categories']),
+    onProducts() {
+      return !(
+        this.filter.period.length ||
+        this.filter.type.length ||
+        Object.keys(this.filter.sphere).length ||
+        Object.keys(this.filter.radius).length ||
+        Object.keys(this.filter.add).length ||
+        Object.keys(this.filter.ax).length ||
+        Object.keys(this.filter.cylinder).length ||
+        Object.keys(this.filter.dominant).length
+      )
+        ? this.categories
+        : this.filter_products;
+    },
   },
   async mounted() {
     this.SET_FILTER({
@@ -277,43 +262,62 @@ export default defineComponent({
         this.SET_LOADING(false);
       }
     },
+    closeInfo() {
+      this.SET_FILTER({
+        type: [],
+        period: [],
+        sphere: {},
+        radius: {},
+        add: {},
+        ax: {},
+        cylinder: {},
+        dominant: {},
+      });
+    },
   },
 });
 </script>
 
 <style lang="scss">
-.search {
-  .searchbar-input-container .sc-ion-searchbar-ios {
-    height: 30px !important;
-    font-size: 12px !important;
-    --background: #ffffff;
-  }
+#catalog {
+  .search {
+    .searchbar-input-container .sc-ion-searchbar-ios {
+      height: 30px !important;
+      font-size: 12px !important;
+      --background: #ffffff;
+    }
 
-  .filter {
-    background: #ffffff;
-    height: 24px !important;
-    width: 24px !important;
-    border-radius: 5px !important;
+    .filter {
+      background: #ffffff;
+      height: 24px !important;
+      width: 24px !important;
+      border-radius: 5px !important;
 
-    .icon-filter {
-      height: 12px;
-      width: 13px;
+      .icon-filter {
+        height: 12px;
+        width: 13px;
+      }
     }
   }
-}
 
-.filter-element {
-  overflow-y: auto;
-}
+  .filter-element {
+    overflow-y: auto;
+  }
 
-.wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 0 8px;
+  .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 8px;
 
-  .product:after {
-    --background: #deeeea;
+    .product:after {
+      --background: #deeeea;
+    }
+  }
+
+  .catalog-button {
+    position: relative;
+    bottom: 100px;
   }
 }
 </style>

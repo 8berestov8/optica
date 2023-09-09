@@ -13,4 +13,5 @@ export interface Categorie {
   products?: Array<Product>;
   discount?: string;
   type?: string;
+  categorie_id?: number | string;
 }

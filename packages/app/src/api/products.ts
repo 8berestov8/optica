@@ -197,6 +197,8 @@ export const getProduct = async (
 
     const product: Product = { title: '', short_title: '', price: '' };
     const response = await API.get(`/products?${paramString}`);
+    console.log(response);
+
     if (response.data) {
       const p = response.data[0];
 
@@ -342,8 +344,8 @@ export const getProduct = async (
       product.type = type.title;
       product.categorie = categorie.id;
     }
-    // console.log(product);
     return product;
+    // console.log(product);
   } catch (e) {
     console.error(e);
   }
@@ -709,89 +711,7 @@ export const filterProducts = async (
           radius: radius,
           sphere: sphere,
           type: type.title,
-          categorie: categorie.id,
-        });
-      });
-    }
-
-    return products;
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-export const searchProducts = async (
-  params?: any
-): Promise<Product[] | undefined> => {
-  try {
-    // empty paramstring
-    let paramString = '';
-    // params include
-    if (params) {
-      paramString = qs.stringify({
-        populate: ['image', 'categorie', 'type'],
-        filters: {
-          title: {
-            $containsi: params.search,
-          },
-        },
-        pagination: {
-          page: params.page,
-        },
-        encodeValuesOnly: true,
-      });
-    }
-
-    const products: Product[] = [];
-    const response = await API.get(`/products?${paramString}`);
-
-    if (response.data) {
-      // console.log(response.data);
-      response.data.map((p: any) => {
-        //extract images
-        const images: Image[] = [];
-
-        // if Product has images map to Image Interface
-        if (Object.hasOwnProperty.call(p.attributes, 'image')) {
-          const img = p.attributes.image.data ?? [];
-          img.map((i: any) => {
-            images.push({
-              id: Number(i.id),
-              url: process.env.VUE_APP_SERVER + i.attributes.url,
-              thumbnailUrl:
-                process.env.VUE_APP_SERVER +
-                  i.attributes.formats.thumbnail.url ?? '',
-              alternativeText: '',
-              caption: '',
-            });
-          });
-        }
-
-        // if Product has manufacturer map to Sphere Interface
-        const type: Type = { id: 0, title: '', description: '' };
-        if (Object.hasOwnProperty.call(p.attributes, 'type')) {
-          const m = p.attributes.type.data;
-          type.id = m?.id;
-          type.title = m?.attributes.title;
-          type.description = m?.attributes.description;
-        }
-
-        // if Product has manufacturer map to Sphere Categorie
-        const categorie = { title: '' };
-        if (Object.hasOwnProperty.call(p.attributes, 'categorie')) {
-          const m = p.attributes.categorie.data;
-          categorie.title = m?.attributes.title;
-        }
-
-        products.push({
-          id: p.id,
-          title: categorie.title,
-          short_title: p.attributes.short_title,
-          price: p.attributes.price,
-          discount: p.attributes.discount,
-          image: images,
-          type: type.title,
-          categorie: categorie.title,
+          categorie_id: categorie.id,
         });
       });
     }

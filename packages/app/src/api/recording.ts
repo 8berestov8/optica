@@ -40,10 +40,22 @@ export const getTime = async (): Promise<undefined> => {
   }
 };
 
-export const sendRecord = async (data: any): Promise<undefined> => {
+export const sendRecord = async (data: any) => {
   try {
-    return API.post(`appointments`, { data })
-      .then(({ data }: any) => data)
+    return API.post(`appointments?populate=recording`, { data })
+      .then(({ data }: any) => {
+        console.log(data);
+        return {
+          id: data.id,
+          booked: data.attributes.booked,
+          date: data.attributes.date,
+          reserved: data.attributes.reserved,
+          service: data.attributes.service,
+          reserve: data.attributes.reserved,
+          time: data.attributes.recording.data.attributes.time,
+          visit: data.attributes.visit,
+        };
+      })
       .catch((e: any) => console.error(e));
   } catch (e) {
     console.error(e);
@@ -65,6 +77,41 @@ export const getRecordHistory = async (data: any): Promise<undefined> => {
           };
         });
       })
+      .catch((e: any) => console.error(e));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const getRecordingById = async (data: any) => {
+  try {
+    return API.get(
+      `appointments?populate=recording&filters[reserved]=true&filters[user][id]=${data.id}&filters[date][$gt]=${data.date}`
+    )
+      .then(({ data }: any) => {
+        if (data.length) {
+          return {
+            id: data[0].id,
+            booked: data[0].attributes.booked,
+            date: data[0].attributes.date,
+            reserved: data[0].attributes.reserved,
+            service: data[0].attributes.service,
+            reserve: data[0].attributes.reserved,
+            time: data[0].attributes.recording.data.attributes.time,
+            visit: data[0].attributes.visit,
+          };
+        }
+      })
+      .catch((e: any) => console.error(e));
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const cancelRecording = async (data: any) => {
+  try {
+    return API.put(`appointments/${data.id}`, { data: { reserved: false } })
+      .then(({ data }: any) => data)
       .catch((e: any) => console.error(e));
   } catch (e) {
     console.error(e);

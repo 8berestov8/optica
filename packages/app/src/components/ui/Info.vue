@@ -1,5 +1,5 @@
 <template>
-  <ion-content class="info-wrapper" :scroll-y="false">
+  <Content class="info-wrapper">
     <div class="vector">
       <img :src="icon" />
     </div>
@@ -7,12 +7,12 @@
       <p class="title">{{ title }}</p>
       <p class="description">{{ description }}</p>
     </div>
-  </ion-content>
+  </Content>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
-import { IonContent } from '@ionic/vue';
+import Content from './Content.vue';
 
 export default defineComponent({
   name: 'Info',
@@ -29,10 +29,14 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    button: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update'],
   components: {
-    IonContent,
+    Content,
   },
 });
 </script>

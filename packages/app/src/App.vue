@@ -31,11 +31,12 @@ export default defineComponent({
         if (typeof newError === 'string') {
           this.presentAlert();
         } else if (typeof newError === 'object') {
-          // if (newError?.type === 'Unauthorized') {
-          //   this.$toast(this.$t('PLEASE-LOGIN'), 4000);
-          //   this.logout();
-          //   this.$router.replace('/');
-          // }
+          if (newError?.type === 'Error') {
+            this.$toast(
+              'Товары с такими параметрами не найдены, пожалуйста измените параметры!',
+              5000
+            );
+          }
           if (newError?.type === 'Network') {
             const { method } = newError;
             const message =
@@ -62,6 +63,7 @@ export default defineComponent({
       'getPeriod',
       'filterProducts',
       'getCategories',
+      'getActionsNews',
     ]),
     async presentAlert() {
       try {
@@ -83,6 +85,7 @@ export default defineComponent({
   async mounted() {
     pushNotifications.OnInit();
     const list = [
+      this.getActionsNews(),
       this.getCategories(),
       this.getPeriod(),
       this.getSphere(),
@@ -93,17 +96,6 @@ export default defineComponent({
       this.getCylinders(),
       this.getDominants(),
     ];
-    /*
-    await this.getCategories();
-    await this.getPeriod();
-    await this.getSphere();
-    await this.getRadius();
-    await this.getTypes();
-    await this.getAdds();
-    await this.getAxes();
-    await this.getCylinders();
-    await this.getDominants();
-*/
 
     await Promise.all(list);
     if (!isPlatform('mobileweb')) {

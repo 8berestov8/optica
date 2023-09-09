@@ -2,7 +2,7 @@
   <ion-page id="record-history">
     <Header back :title="$t('HISTORY-VISITS')" />
     <Loading v-if="loading" />
-    <Content v-if="!loading" @refresh="refresh">
+    <Content v-if="!loading" @refresh="refresh" scroll>
       <Info
         v-if="!history.length"
         icon="assets/icon/empty-history.svg"

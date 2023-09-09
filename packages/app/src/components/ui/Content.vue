@@ -1,9 +1,14 @@
 <template>
-  <ion-content ref="Content" :scroll-events="true" @ionScroll="onScroll">
+  <ion-content ref="Content" :scroll-y="scroll" @ionScroll="onScroll">
     <ion-grid class="ion-no-padding container" fixed>
       <slot></slot>
     </ion-grid>
-    <ion-refresher slot="fixed" @ionRefresh="doRefresh" class="refresher">
+    <ion-refresher
+      v-if="onRefresh"
+      slot="fixed"
+      @ionRefresh="doRefresh"
+      class="refresher"
+    >
       <ion-refresher-content class="refresher-content"></ion-refresher-content>
     </ion-refresher>
   </ion-content>
@@ -26,7 +31,17 @@ export default defineComponent({
     IonRefresherContent,
     IonGrid,
   },
-  props: {} || [],
+  props:
+    {
+      onRefresh: {
+        typy: Boolean,
+        default: false,
+      },
+      scroll: {
+        typy: Boolean,
+        default: false,
+      },
+    } || [],
   emits: ['refresh', 'onScrollEnd'],
   data: () => ({
     refreshing: false,

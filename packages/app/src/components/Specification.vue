@@ -31,7 +31,7 @@
       <ion-col>
         <ion-label class="title">{{ $t('REPLACEMENT-PERIOD') }}</ion-label>
         <ion-buttons class="btn-question-period">
-          <ion-button @click="openPopover">
+          <ion-button @click="presentAlert">
             <ion-icon
               icon="assets/icon/question.svg"
               slot="icon-only"
@@ -56,7 +56,6 @@
       </ion-col>
     </ion-row>
   </ion-col>
-  <Popover :button-ok="$t('OK')" @handler="closePopover" />
 </template>
 
 <script lang="ts">
@@ -69,14 +68,12 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
+  alertController,
 } from '@ionic/vue';
-import { mapMutations } from 'vuex';
-import Popover from '@/components/ui/Popover.vue';
 
 export default defineComponent({
   name: 'Specification',
   components: {
-    Popover,
     IonRow,
     IonCol,
     IonLabel,
@@ -108,18 +105,22 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapMutations(['SET_POPOVER']),
-    openPopover() {
-      this.SET_POPOVER({
-        show: true,
-        message: [this.$t('REPLACEMENT-PERIOD-MESSAGE')],
+    async presentAlert() {
+      const alert = await alertController.create({
+        message: this.$t('REPLACEMENT-PERIOD-MESSAGE'),
+        buttons: [
+          {
+            text: this.$t('OK'),
+            role: 'confirm',
+            handler: () => {
+              console.log('ok');
+            },
+          },
+        ],
       });
-    },
-    closePopover() {
-      this.SET_POPOVER({
-        show: false,
-        message: [''],
-      });
+
+      await alert.present();
+      await alert.onDidDismiss();
     },
   },
 });

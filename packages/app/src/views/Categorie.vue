@@ -2,7 +2,7 @@
   <ion-page>
     <Header back :title="$t('PRODUCT-TITLE')" />
     <Loading v-if="loading" />
-    <ion-content v-if="!loading">
+    <Content v-if="!loading">
       <ion-list class="container">
         <ion-row class="ion-margin wrapper" style="position: relative">
           <div class="discount" v-if="categorie.discount">
@@ -16,10 +16,7 @@
             :autoplay="true"
             class="swiper"
           >
-            <swiper-slide
-              v-for="(image, index) in categorie.image"
-              :key="index"
-            >
+            <swiper-slide v-for="(image, index) in categorie.image" :key="index">
               <img :src="image.url" class="image" />
             </swiper-slide>
           </swiper>
@@ -30,9 +27,7 @@
           </ion-row>
           <ion-row class="ion-margin-top row">
             <ion-label class="price">от {{ discountPrice }} ₽</ion-label>
-            <ion-label
-              v-if="categorie.discount"
-              class="ion-margin-start old-price"
+            <ion-label v-if="categorie.discount" class="ion-margin-start old-price"
               >{{ categorie.price }} ₽
             </ion-label>
           </ion-row>
@@ -47,7 +42,7 @@
                 delivery = false;
               }
             "
-            >{{ $t('CHARACTERISTICS') }}
+            >{{ $t("CHARACTERISTICS") }}
           </ion-label>
           <ion-label
             :class="['text', { active: description }, 'ion-margin']"
@@ -58,7 +53,7 @@
                 delivery = false;
               }
             "
-            >{{ $t('DESCRIPTION') }}
+            >{{ $t("DESCRIPTION") }}
           </ion-label>
           <ion-label
             :class="['text', { active: delivery }, 'ion-margin']"
@@ -69,7 +64,7 @@
                 delivery = true;
               }
             "
-            >{{ $t('DELIVERY') }}
+            >{{ $t("DELIVERY") }}
           </ion-label>
         </ion-row>
         <ion-row>
@@ -93,13 +88,13 @@
           />
         </ion-row>
       </ion-list>
-    </ion-content>
+    </Content>
   </ion-page>
 </template>
 
 <script lang="js">
 import {defineComponent} from 'vue';
-import {IonPage, IonRow, IonList, IonLabel, IonContent} from '@ionic/vue';
+import {IonPage, IonRow, IonList, IonLabel} from '@ionic/vue';
 import {Swiper, SwiperSlide} from 'swiper/vue';
 import {
   Controller,
@@ -127,6 +122,7 @@ import 'swiper/css/zoom';
 import '@ionic/vue/css/ionic-swiper.css';
 import Loading from "@/components/ui/Loading.vue";
 import {discountPrice} from "@/helpers/discountPrice";
+import Content from '@/components/ui/Content.vue';
 
 
 
@@ -151,7 +147,7 @@ export default defineComponent({
     Specification,
     Description,
     Delivery,
-    IonContent
+    Content
   },
   data() {
     return {

@@ -2,7 +2,7 @@
   <ion-page>
     <Header :title="$t('MY-DETAILS')" back />
     <Loading v-if="loading" />
-    <ion-content id="my-data">
+    <Content id="my-data">
       <ion-list class="ion-margin-end">
         <ItemInput lines :error="errorFields.firstname" class="ion-margin-top">
           <ion-input
@@ -49,15 +49,20 @@
           ></ion-input>
         </ItemInput>
       </ion-list>
-
-      <Button :title="$t('SAVE')" class="button" @click="saveUser" />
-    </ion-content>
+      <ion-grid :fixed="true" class="button-container">
+        <ion-row class="ion-align-items-end ion-justify-content-between">
+          <ion-col class="align-self-end">
+            <Button :title="$t('SAVE')" class="button" @click="saveUser" />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </Content>
   </ion-page>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
-import { IonPage, IonContent, IonList, IonInput, IonIcon } from '@ionic/vue';
+import { IonPage, IonList, IonInput, IonIcon } from '@ionic/vue';
 import Header from '@/components/ui/Header.vue';
 import Button from '@/components/ui/Button.vue';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
@@ -65,6 +70,7 @@ import Loading from '@/components/ui/Loading.vue';
 import ItemInput from '@/components/ui/ItemInput.vue';
 import { checkFields, clearFields } from '@/helpers/from';
 import ItemDate from '@/components/ui/ItemDate.vue';
+import Content from '@/components/ui/Content.vue';
 import { formatDate } from '@/helpers/formatter';
 
 export default defineComponent({
@@ -76,10 +82,10 @@ export default defineComponent({
     Button,
     Header,
     IonPage,
-    IonContent,
     IonList,
     IonInput,
     IonIcon,
+    Content,
   },
   data() {
     return {
@@ -149,12 +155,16 @@ export default defineComponent({
     margin-bottom: 4px;
   }
 
-  .button {
-    margin: 0 10px;
-    position: fixed;
-    bottom: 30px;
-    left: 0;
-    right: 0;
+  .button-container {
+    bottom: 0;
+    position: absolute;
+
+    .button {
+      margin: 0 10px;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+    }
   }
 }
 </style>

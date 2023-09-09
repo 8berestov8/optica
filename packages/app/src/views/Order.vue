@@ -1,6 +1,6 @@
 <template>
   <ion-page id="order">
-    <ion-content :scroll-y="false">
+    <Content :scroll-y="false">
       <Info
         icon="assets/icon/check.svg"
         :title="`${$t('YOUR-ORDER-NUMMBER')} ${order} ${$t(
@@ -9,16 +9,17 @@
         :description="$t('ORDER-DESCRIPTION')"
       />
       <Button :title="$t('TO-MAIN')" class="button" @click.prevent="toHome" />
-    </ion-content>
+    </Content>
   </ion-page>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage } from '@ionic/vue';
 import { mapGetters, mapMutations } from 'vuex';
 import Info from '@/components/ui/Info.vue';
 import Button from '@/components/ui/Button.vue';
+import Content from '@/components/ui/Content.vue';
 
 export default defineComponent({
   name: 'Order',
@@ -26,7 +27,7 @@ export default defineComponent({
     Button,
     Info,
     IonPage,
-    IonContent,
+    Content,
   },
   computed: {
     ...mapGetters(['order']),
@@ -47,8 +48,9 @@ export default defineComponent({
     --background: #ffffff;
   }
   .button {
-    bottom: 60px;
+    bottom: 40px;
     position: relative;
+    margin: 0 8px;
   }
 }
 </style>

@@ -2,7 +2,7 @@
   <ion-page id="check-recording">
     <Header back :title="$t('VISIT-TO-DOCTOR')" />
     <Loading v-if="loading" />
-    <ion-content :scroll-y="false" v-if="!loading">
+    <Content :scroll-y="false" v-if="!loading">
       <CardInfo
         v-if="date && handlerTime"
         :title="$t('DATE-TIME-VISIT')"
@@ -19,7 +19,7 @@
         v-if="handlerOpticAddress.city"
         :title="$t('OPTICS-ADDRESS')"
         icon="assets/icon/location-profile.svg"
-        :description="`г. ${handlerOpticAddress.city}, ул. ${handlerOpticAddress.street}, ${handlerOpticAddress.number} пом. ${handlerOpticAddress.apartment}`"
+        :description="`г. ${handlerOpticAddress.city}, ул. ${handlerOpticAddress.street}, ${handlerOpticAddress.number}`"
       />
       <Skeleton
         v-if="!handlerOpticAddress.city"
@@ -65,12 +65,18 @@
         >
       </ion-row>
 
-      <Button
-        :title="$t('RECORDING')"
-        class="recording-button"
-        @click="recording"
-      />
-    </ion-content>
+      <ion-grid :fixed="true" class="button-container">
+        <ion-row class="ion-align-items-end ion-justify-content-between">
+          <ion-col class="align-self-end">
+            <Button
+              :title="$t('RECORDING')"
+              class="recording-button"
+              @click="recording"
+            />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </Content>
   </ion-page>
 </template>
 
@@ -78,7 +84,6 @@
 import { defineComponent } from 'vue';
 import {
   IonPage,
-  IonContent,
   IonCard,
   IonCardContent,
   IonRow,
@@ -87,6 +92,8 @@ import {
   IonAvatar,
   IonText,
   IonItem,
+  IonCol,
+  IonGrid,
 } from '@ionic/vue';
 import Header from '@/components/ui/Header.vue';
 import CardInfo from '@/components/CardInfo.vue';
@@ -94,8 +101,8 @@ import Button from '@/components/ui/Button.vue';
 import Loading from '@/components/ui/Loading.vue';
 import { mapActions, mapGetters } from 'vuex';
 import { formatDate, formatPhone } from '@/helpers/formatter';
-import { sendRecord } from '@/api/recording';
 import Skeleton from '@/components/ui/Skeleton.vue';
+import Content from '@/components/ui/Content.vue';
 
 export default defineComponent({
   name: 'CheckRecording',
@@ -106,7 +113,6 @@ export default defineComponent({
     CardInfo,
     Header,
     IonPage,
-    IonContent,
     IonCard,
     IonCardContent,
     IonRow,
@@ -115,6 +121,9 @@ export default defineComponent({
     IonAvatar,
     IonText,
     IonItem,
+    Content,
+    IonCol,
+    IonGrid,
   },
   computed: {
     ...mapGetters([
@@ -160,7 +169,7 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapActions(['getAddress', 'getDoctor']),
+    ...mapActions(['getAddress', 'getDoctor', 'sendRecord']),
     formatDate,
     formatPhone,
     async recording() {
@@ -172,7 +181,7 @@ export default defineComponent({
       }
       if (this.handlerData) {
         this.loading = true;
-        await sendRecord({
+        await this.sendRecord({
           date: this.handlerDate,
           reserved: true,
           doctor: this.handlerDoctor.id,
@@ -196,12 +205,15 @@ export default defineComponent({
 
 <style lang="scss">
 #check-recording {
-  .recording-button {
-    left: 0;
+  .button-container {
     position: absolute;
-    bottom: 30px;
-    right: 0;
-    margin: 0 10px;
+    bottom: 0;
+    .recording-button {
+      left: 0;
+      bottom: 30px;
+      right: 0;
+      margin: 0 10px;
+    }
   }
 
   .content {

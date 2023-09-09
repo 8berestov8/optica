@@ -1,6 +1,6 @@
 <template>
   <ion-grid id="time-select-wrapper">
-    <ion-row class="ion-justify-content-evenly">
+    <ion-row class="ion-justify-content-evenly time-container">
       <ion-col
         class="time-item"
         v-for="(item, index) in times"
@@ -73,6 +73,12 @@ export default defineComponent({
 #time-select-wrapper {
   background: #ffffff;
   border-radius: 5px;
+  margin: 0;
+
+  .time-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+  }
 
   .time-item {
     /* Component 5 */

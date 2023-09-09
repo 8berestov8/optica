@@ -29,7 +29,7 @@
         <ion-row class="ion-margin" style="position: relative">
           <ion-title class="text">{{ $t('LENS-TYPE') }}</ion-title>
           <ion-buttons class="btn-question">
-            <ion-button @click="openPopover">
+            <ion-button @click="presentAlert">
               <ion-icon
                 icon="assets/icon/question.svg"
                 slot="icon-only"
@@ -188,7 +188,6 @@
       </ion-row>
     </ion-content>
   </ion-modal>
-  <Popover :button-ok="$t('OK')" @handler="closePopover" />
 </template>
 
 <script lang="js">
@@ -202,10 +201,10 @@ import {
   IonButton,
   IonCol,
   IonIcon,
+  alertController,
 } from '@ionic/vue';
 import Select from '@/components/ui/Select.vue';
 import Button from '@/components/ui/Button.vue'
-import Popover from "@/components/ui/Popover.vue";
 import MultipleButton from "@/components/ui/MultipleButton.vue";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 
@@ -231,7 +230,6 @@ export default defineComponent({
     IonButton,
     IonCol,
     IonIcon,
-    Popover
   },
   data: () => ({
     isRadius: false,
@@ -267,7 +265,7 @@ export default defineComponent({
   },
 
   methods: {
-    ...mapMutations(['SET_POPOVER', 'SET_FILTER',]),
+    ...mapMutations([ 'SET_FILTER',]),
     ...mapActions(['filterProducts']),
     onChange() {
       this.filter = {...this.store_filter}
@@ -293,15 +291,27 @@ export default defineComponent({
     openDominant(e) {
       this.isDominant = e
     },
-    closePopover( ) {
-      this.SET_POPOVER({show: false, message: []})
-    },
-    openPopover() {
+
+    async presentAlert() {
       const messages = []
-      this.type.map((el) => {
-        messages.push(el.description)
-      })
-      this.SET_POPOVER({show: true, message: messages})
+
+      console.log(messages);
+      const alert = await alertController.create({
+        // eslint-disable-next-line no-undef
+        message: this.type.map((el) => el.description),
+        buttons: [
+          {
+            text: this.$t('OK'),
+            role: 'confirm',
+            handler: () => {
+              console.log('ok');
+            },
+          },
+        ],
+      });
+
+      await alert.present();
+      await alert.onDidDismiss();
     },
     apply() {
       this.$emit('hide')
@@ -434,5 +444,9 @@ export default defineComponent({
 
 .button-native {
   border: none !important;
+}
+
+.foo .alert-message {
+  white-space: pre;
 }
 </style>

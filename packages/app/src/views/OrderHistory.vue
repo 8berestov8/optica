@@ -2,7 +2,7 @@
   <ion-page id="order-history">
     <Header back :title="$t('HISTORY-ORDER')" />
     <Loading v-if="loading" />
-    <Content id="order-history" @refresh="refresh" v-if="!loading">
+    <Content id="order-history" @refresh="refresh" v-if="!loading" scroll>
       <Info
         v-if="!history.length"
         icon="assets/icon/empty-cart.svg"

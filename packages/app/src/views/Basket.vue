@@ -7,8 +7,8 @@
       :description="$t('BASKET-EMPTY-DESCRIPTION')"
       icon="assets/icon/empty-basket.svg"
     />
-    <ion-content
-      :fullscreen="true"
+    <Content
+      scroll
       v-if="order_product_details.length"
       :style="
         !order_product_details.length
@@ -18,7 +18,7 @@
     >
       <ion-row class="ion-justify-content-end ion-margin">
         <ion-buttons>
-          <ion-button class="clear-button" @click="clearBasket">
+          <ion-button class="clear-button" @click="presentAlert">
             <ion-icon icon="assets/icon/clear-basket.svg" class="icon" />
             <span>{{ $t('EMPTY-BASKET') }}</span>
           </ion-button>
@@ -60,7 +60,7 @@
                     <ion-button
                       size="small"
                       class="button"
-                      @click="countMinus(index)"
+                      @click="countMinus(index, order.product_count)"
                     >
                       <ion-icon :icon="minus" class="icon"></ion-icon>
                     </ion-button>
@@ -106,21 +106,23 @@
       </ion-row>
       <Button
         :title="$t('TO-ORDER')"
-        class="order-button"
         @click.prevent="toOrder"
+        class="order-button"
       />
-    </ion-content>
-    <Popover
-      :button-ok="$t('CLEAR')"
-      :button-cancel="$t('CANCEL')"
-      @handler="changeBasket"
-    />
-    <Button
-      v-if="!order_product_details.length"
-      :title="$t('TO-CATALOG')"
-      @click="$router.push({ path: PATH_CATALOG })"
-      class="catalog-button"
-    />
+    </Content>
+    <Content v-if="!order_product_details.length">
+      <ion-grid :fixed="true" class="button-container">
+        <ion-row class="ion-align-items-end ion-justify-content-between">
+          <ion-col class="align-self-end">
+            <Button
+              :title="$t('TO-CATALOG')"
+              @click="$router.push({ path: PATH_CATALOG })"
+              class="catalog-button"
+            />
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </Content>
   </ion-page>
 </template>
 
@@ -128,7 +130,6 @@
 import { defineComponent } from 'vue';
 import {
   IonPage,
-  IonContent,
   IonCard,
   IonRow,
   IonCardContent,
@@ -137,23 +138,23 @@ import {
   IonIcon,
   IonButton,
   IonButtons,
+  alertController,
+  IonGrid,
 } from '@ionic/vue';
 import { mapGetters, mapMutations } from 'vuex';
 import { addOutline, removeOutline } from 'ionicons/icons';
 import Header from '@/components/ui/Header.vue';
 import Info from '@/components/ui/Info.vue';
 import Button from '@/components/ui/Button.vue';
-import Popover from '@/components/ui/Popover.vue';
+import Content from '@/components/ui/Content.vue';
 import { PATH_CATALOG } from '@/router/constants';
 
 export default defineComponent({
   name: 'Basket',
   components: {
-    Popover,
     Button,
     Info,
     Header,
-    IonContent,
     IonPage,
     IonCard,
     IonRow,
@@ -163,6 +164,8 @@ export default defineComponent({
     IonIcon,
     IonButton,
     IonButtons,
+    Content,
+    IonGrid,
   },
   data() {
     return {
@@ -170,6 +173,16 @@ export default defineComponent({
       plus: addOutline,
       minus: removeOutline,
     };
+  },
+  watch: {
+    order_product_details(newVal, oldVal) {
+      console.log(newVal, oldVal);
+      if (newVal.length !== newVal.length) {
+        this.SET_BASKET_COUNT();
+        this.SET_TOTAL_AMOUNT();
+        this.SET_TOTAL_DISCOUNT();
+      }
+    },
   },
   computed: {
     ...mapGetters([
@@ -217,35 +230,44 @@ export default defineComponent({
         this.$router.push({ name: 'Pickup' });
       }
     },
-    changeBasket(event) {
-      if (event === 'ok') {
-        this.SET_POPOVER({
-          show: false,
-          message: [],
-        });
-        this.SET_ORDER_PRODUCT_DETAILS_FULL([]);
-        this.SET_BASKET_COUNT();
-      }
-      if (event === 'cancel') {
-        this.SET_POPOVER({
-          show: false,
-          message: [],
-        });
-      }
+    changeBasket() {
+      this.SET_ORDER_PRODUCT_DETAILS_FULL([]);
+      this.SET_BASKET_COUNT();
     },
-    clearBasket() {
-      this.SET_POPOVER({
-        show: true,
-        message: [this.$t('EMPTY-BASKET-TEXT')],
+    async presentAlert() {
+      const alert = await alertController.create({
+        header: this.$t('REMOVE-BASKET'),
+        message: this.$t('EMPTY-BASKET-TEXT'),
+        buttons: [
+          {
+            text: this.$t('CANCEL'),
+            role: 'cancel',
+            handler: () => {
+              console.log('cancel');
+            },
+          },
+          {
+            text: this.$t('OK'),
+            role: 'confirm',
+            handler: () => {
+              console.log('ok');
+              this.changeBasket();
+            },
+          },
+        ],
       });
+
+      await alert.present();
+      await alert.onDidDismiss();
     },
-    countMinus(idx) {
+    countMinus(idx, count) {
+      console.log(idx);
       const orders = this.order_product_details.map((element, index) => {
         if (idx === index) {
           const product_amount = element.product_amount / element.product_count;
           const product_discount =
             element.product_discount / element.product_count;
-          if (element.product_count > 1) {
+          if (element.product_count >= 1) {
             element.product_count--;
           }
 
@@ -254,6 +276,12 @@ export default defineComponent({
         }
         return element;
       });
+
+      if (count <= 1) {
+        orders.splice(idx, 1);
+      }
+
+      console.log(orders);
       this.SET_ORDER_PRODUCT_DETAILS_FULL(orders);
       this.SET_BASKET_COUNT();
       this.SET_TOTAL_AMOUNT();
@@ -281,8 +309,11 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.SET_TOTAL_AMOUNT();
-    this.SET_TOTAL_DISCOUNT();
+    setTimeout(() => {
+      this.SET_BASKET_COUNT();
+      this.SET_TOTAL_AMOUNT();
+      this.SET_TOTAL_DISCOUNT();
+    }, 1000);
   },
 });
 </script>
@@ -303,6 +334,11 @@ export default defineComponent({
       width: 13px;
       margin-right: 6px;
     }
+  }
+
+  .button-container {
+    bottom: 0;
+    position: absolute;
   }
 
   .order-button {
@@ -369,12 +405,16 @@ export default defineComponent({
             color: #1e2023;
             --background-activated: none;
 
+            &::part(native) {
+              padding: 7px 9px 7px 9px;
+            }
+
             .icon {
               color: #005944;
             }
           }
 
-          .button:focus {
+          .button:hover {
             --background: none;
           }
         }

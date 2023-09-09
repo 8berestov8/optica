@@ -1,55 +1,74 @@
 <template>
   <ion-card class="card-info">
-    <ion-card-content class="content">
-      <ion-row class="ion-align-items-center">
-        <ion-icon :icon="icon" class="ion-margin-end icon" v-if="icon" />
-        <ion-label class="title">{{ title }}</ion-label>
-      </ion-row>
+    <ion-card-content class="content" :style="button ? { 'padding-bottom': 0 } : ''">
+      <ion-row>
+        <ion-col>
+          <ion-row class="ion-align-items-center">
+            <ion-icon :icon="icon" class="ion-margin-end icon" v-if="icon" />
+            <ion-label class="title">{{ title }}</ion-label>
+          </ion-row>
 
-      <ion-row class="description-row">
-        <ion-label class="description">
-          {{ description }}
-        </ion-label>
-      </ion-row>
-      <ion-row class="description-row" v-if="subdescription">
-        <ion-label class="description">
-          {{ subdescription }}
-        </ion-label>
+          <ion-row class="description-row">
+            <ion-label class="description">
+              {{ description }}
+            </ion-label>
+          </ion-row>
+          <ion-row class="description-row" v-if="subdescription">
+            <ion-label class="description">
+              {{ subdescription }}
+            </ion-label>
+          </ion-row>
+        </ion-col>
+        <ion-col v-if="button">
+          <Button :title="buttonTitle" @click="$emit('cancel')" />
+        </ion-col>
       </ion-row>
     </ion-card-content>
   </ion-card>
 </template>
 
 <script>
-import { IonCard, IonCardContent, IonRow, IonIcon, IonLabel } from '@ionic/vue';
+import { IonCard, IonCardContent, IonRow, IonCol, IonIcon, IonLabel } from "@ionic/vue";
+import Button from "./ui/Button.vue";
 
 export default {
-  name: 'CardInfo',
+  name: "CardInfo",
   components: {
     IonCard,
     IonCardContent,
     IonRow,
+    IonCol,
     IonIcon,
     IonLabel,
+    Button,
   },
   props: {
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     icon: {
       type: String,
-      default: '',
+      default: "",
     },
     description: {
       type: String,
-      default: '',
+      default: "",
     },
     subdescription: {
       type: String,
-      default: '',
+      default: "",
+    },
+    button: {
+      type: Boolean,
+      default: false,
+    },
+    buttonTitle: {
+      type: String,
+      default: "",
     },
   },
+  emits: ["cancel"],
 };
 </script>
 

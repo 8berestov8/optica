@@ -2,7 +2,7 @@
   <ion-page id="params">
     <Header :title="$t('OPTIONS')" contact back />
     <Loading v-if="loading" />
-    <ion-content v-if="!loading" class="params-content">
+    <Content v-if="!loading" class="params-content" scroll>
       <ion-row class="ion-margin">
         <ion-label>{{ $t('OPTIONS-TITLE') }}</ion-label>
       </ion-row>
@@ -276,7 +276,7 @@
       <ion-row class="row">
         <Button :title="$t('APPLY')" class="button" @click="apply" />
       </ion-row>
-    </ion-content>
+    </Content>
     <Popover button-ok="OK" @handler="closePopover" />
   </ion-page>
 </template>
@@ -287,7 +287,6 @@ import {
   IonPage,
   IonRow,
   IonLabel,
-  IonContent,
   IonCol,
   IonTitle,
   IonButton,
@@ -302,6 +301,7 @@ import Button from '@/components/ui/Button.vue';
 import { discountPrice } from '@/helpers/discountPrice';
 import Popover from '@/components/ui/Popover.vue';
 import Loading from '@/components/ui/Loading.vue';
+import Content from '@/components/ui/Content.vue';
 import { getMetaProducts } from '@/api/products';
 import { checkSelect, checkSelectTwo } from '@/helpers/from';
 
@@ -316,12 +316,12 @@ export default defineComponent({
     IonPage,
     IonRow,
     IonLabel,
-    IonContent,
     IonCol,
     IonTitle,
     IonButton,
     IonIcon,
-    Loading
+    Loading,
+    Content
   },
   props: {
     id: {
@@ -422,7 +422,8 @@ export default defineComponent({
           dominant: this.fields.dominant
         });
 
-        const a = {
+        if(product) {
+          const a = {
           product: product.id,
           categorie: product.categorie,
           radius:product?.radius[0]?.id,
@@ -442,6 +443,9 @@ export default defineComponent({
         this.SET_TOTAL_AMOUNT();
         this.SET_TOTAL_DISCOUNT();
         this.$router.replace({ name: 'Basket' });
+        } else {
+          window.$store.dispatch('setError', { type: 'Error' });
+        }
 
       } else if (this.different && !this.checkSelect() && !this.checkSelectTwo()) {
         const product = await this.getProduct({
@@ -454,6 +458,7 @@ export default defineComponent({
           dominant: this.fields.dominant
         });
 
+        console.log(product);
 
         const productTwo = await this.getProduct({
           categorie: this.id,
@@ -464,7 +469,8 @@ export default defineComponent({
           ax: this.fieldsTwo.ax,
           dominant: this.fieldsTwo.dominant
         });
-        const a = {
+        if(product && productTwo) {
+          const a = {
           product: product.id,
           categorie: product.categorie,
           radius:product?.radius[0]?.id,
@@ -500,6 +506,10 @@ export default defineComponent({
         this.SET_TOTAL_AMOUNT();
         this.SET_TOTAL_DISCOUNT();
         this.$router.replace({ name: 'Basket' });
+        }  else {
+          window.$store.dispatch('setError', { type: 'Error' });
+        }
+
       }
     },
     closePopover() {
@@ -611,9 +621,13 @@ export default defineComponent({
       --background: none;
       color: #1e2023;
       --background-activated: none;
+
+      &::part(native) {
+        padding: 7px 9px 7px 9px;
+      }
     }
 
-    .button:focus {
+    .button:hover {
       --background: none;
     }
 

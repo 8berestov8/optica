@@ -15,8 +15,10 @@
               ></ion-icon>
             </ion-col>
             <ion-col class="text-col">
-              <ion-label class="text"
-                >г. Владивосток, ул. Енисейская, 23Д пом. 102
+              <ion-label class="text" v-if="handlerOpticAddress.city">
+                {{
+                  `г. ${handlerOpticAddress.city}, ул. ${handlerOpticAddress.street}, ${handlerOpticAddress.number}`
+                }}
               </ion-label>
               <div>
                 <a
@@ -59,6 +61,7 @@ import {
   IonIcon,
   IonRow,
 } from '@ionic/vue';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Address',
@@ -77,6 +80,19 @@ export default {
     IonList,
     IonIcon,
     IonRow,
+  },
+  computed: {
+    ...mapGetters(['optic_address']),
+    handlerOpticAddress() {
+      return this.optic_address;
+    },
+  },
+  methods: {
+    ...mapActions(['getDoctor']),
+  },
+
+  mounted() {
+    this.getDoctor();
   },
 };
 </script>

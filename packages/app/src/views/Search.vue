@@ -8,21 +8,13 @@
             :placeholder="$t('CATALOG-SEARCH')"
             class="searchbar"
             v-model="search"
-            @ionInput="searchProducts"
             @ionClear="clear"
           ></ion-searchbar>
         </ion-row>
       </template>
     </Header>
     <Loading v-if="loading" />
-    <Content
-      :fullscreen="true"
-      id="search"
-      ref="Content"
-      v-if="!loading"
-      :scroll-events="true"
-      @onScrollEnd="onScrollEnd"
-    >
+    <Content id="search" ref="Content" v-if="!loading" scroll>
       <Info
         v-if="search.length && !onProducts.length"
         icon="assets/icon/empty.svg"
@@ -37,7 +29,7 @@
           @click="
             $router.push({
               name: 'Categorie',
-              params: { id: catalogie.id },
+              params: { id: catalogie.categorie_id },
             })
           "
         >
@@ -81,7 +73,6 @@ import Info from '@/components/ui/Info.vue';
 import {mapGetters} from "vuex";
 import Button from "@/components/ui/Button.vue";
 import Content from '@/components/ui/Content.vue';
-import {searchProducts} from '@/api/products'
 
 export default defineComponent({
   name: 'Search',
@@ -103,7 +94,6 @@ export default defineComponent({
   data() {
     return {
       search: '',
-      products: [],
       loading: false,
       isEnd: false,
       loadingScroll: false,
@@ -114,10 +104,12 @@ export default defineComponent({
     setTimeout(() => this.$refs.inputRef.$el.setFocus(), 20);
   },
   computed: {
-    ...mapGetters(['products', 'categories']),
+    ...mapGetters(['filter_products', 'categories']),
     onProducts() {
       return this.search.length
-          ? this.products
+          ? this.categories.filter((categorie) =>
+          categorie.title.toLowerCase().includes(this.search.toLowerCase())
+          )
           : this.categories;
     },
 
@@ -127,30 +119,8 @@ export default defineComponent({
       this.$router.push({name: 'Catalog'});
       this.search = '';
     },
-    searchProducts() {
-      this.loading = true
-      const page = 1
-      searchProducts({search : this.search, page}).then((data)=> {
-        data.map((el)=> this.products.push(el))
-        console.log(data);
-         this.loading = false
-      })
-      return this.products
-    },
-    async onScrollEnd() {
-      if (!this.isEnd && !this.loadingScroll) {
-        this.loadingScroll = true;
-        this.page += 1;
-        searchProducts({search : this.search, page: this.page}).then((data)=> {
-          data.map((el)=> this.products.push(el))
-        })
-      this.loadingScroll = false;
-      return this.products
-      }
-    },
     clear() {
       this.search = ''
-      this.products = []
     }
   },
 

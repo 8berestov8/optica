@@ -8,7 +8,12 @@ import {
 import { checkSms, getUser, sendPhone, updateUser } from '@/api/user';
 import { OrderProductDetails, Product } from '@/interfaces/ProductInterface';
 import { saveAddress, getAddress } from '@/api/address';
-import { getDoctor } from '@/api/recording';
+import {
+  getDoctor,
+  getRecordingById,
+  cancelRecording,
+  sendRecord,
+} from '@/api/recording';
 import { getCategories } from '@/api/categories';
 import { Categorie } from '@/interfaces/CategorieInterface';
 import { ActionNew } from '@/interfaces/ActionsNews';
@@ -35,6 +40,7 @@ const store = createStore({
     },
     categories: Array<Categorie>(),
     products: Array<Product>(),
+    filter_products: Array<Product>(),
     characteristics: {
       type: [],
       period: [],
@@ -60,7 +66,7 @@ const store = createStore({
       date: null,
       service: null,
     },
-    previous_recording: {},
+    previous_recording: null,
     optic_address: {},
     doctor: {},
     order_history: [],
@@ -72,6 +78,7 @@ const store = createStore({
     error: (state) => state.error,
     filter: (state) => state.filter,
     products: (state) => state.products,
+    filter_products: (state) => state.filter_products,
     categories: (state) => state.categories,
     order_product_details: (state) => state.basket.order_product_details,
     basket_count: (state) => state.basket.count,
@@ -105,6 +112,9 @@ const store = createStore({
     SET_FILTER: (state, payload) => (state.filter = payload),
     SET_CATEGORIES: (state, payload) => (state.categories = payload),
     SET_PRODUCTS: (state, payload: Product) => state.products.push(payload),
+    SET_FILTER_PRODUCTS: (state, payload) => (state.filter_products = payload),
+    SET_FILTER_PRODUCTS_PUSH: (state, payload) =>
+      state.filter_products.push(payload),
     SET_ORDER_PRODUCT_DETAILS: (state, payload: OrderProductDetails) =>
       state.basket.order_product_details.push(payload),
     SET_ORDER_PRODUCT_DETAILS_FULL: (state, payload) =>
@@ -300,8 +310,8 @@ const store = createStore({
       context.commit('SET_LOADING', true);
       return new Promise((resolve, reject) => {
         filterProducts(context.getters.filter)
-          .then((data) => {
-            context.commit('SET_PRODUCTS', data);
+          .then((data: any) => {
+            context.commit('SET_FILTER_PRODUCTS', data);
             resolve(data);
             context.commit('SET_LOADING', false);
           })
@@ -404,6 +414,28 @@ const store = createStore({
           context.commit('SET_ACTIONS_NEWS', data);
         })
         .catch((e) => {
+          console.error(e);
+        });
+    },
+    async sendRecord(context: any, params?: any) {
+      sendRecord(params)
+        .then((data: any) => context.commit('SET_PREVIOUS_RECORDING', data))
+        .catch((e: any) => {
+          console.error(e);
+        });
+    },
+    async getRecordingById(context: any, params?: any) {
+      getRecordingById(params)
+        .then((data: any) => context.commit('SET_PREVIOUS_RECORDING', data))
+        .catch((e: any) => {
+          console.error(e);
+        });
+    },
+    async cancelRecording(context: any, params?: any) {
+      console.log(params);
+      cancelRecording(params)
+        .then(() => context.commit('SET_PREVIOUS_RECORDING', null))
+        .catch((e: any) => {
           console.error(e);
         });
     },

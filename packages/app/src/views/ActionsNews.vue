@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <Header :title="$t('ACTION')" back />
-    <ion-content :fullscreen="true">
+    <Content>
       <div class="wrapper">
         <div class="image-box">
           <img :src="item.url" class="image" />
@@ -33,26 +33,27 @@
           />
         </ion-row>
       </div>
-    </ion-content>
+    </Content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonContent, IonPage, IonIcon, IonRow } from '@ionic/vue';
+import { IonPage, IonIcon, IonRow } from '@ionic/vue';
 import Header from '@/components/ui/Header.vue';
 import Button from '@/components/ui/Button.vue';
 import { mapGetters } from 'vuex';
+import Content from '@/components/ui/Content.vue';
 
 export default defineComponent({
   name: 'ActionsNews',
   components: {
     Button,
-    IonContent,
     IonPage,
     Header,
     IonIcon,
     IonRow,
+    Content,
   },
   data() {
     return {

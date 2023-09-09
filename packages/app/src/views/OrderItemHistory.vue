@@ -2,11 +2,11 @@
   <ion-page>
     <Header :title="$t('ORDER')" back />
     <Loading v-if="loading" />
-    <ion-content :scroll-y="false" id="order-item-history" v-if="!loading">
+    <Content :scroll-y="false" id="order-item-history" v-if="!loading">
       <ion-row>
         <ion-label class="ion-margin-top ion-margin-start title"
-          >{{ $t('ORDER-NUMBER') }} {{ order_item.id }} от
-          {{ formatDate(order_item.date, 'LL') }}
+          >{{ $t("ORDER-NUMBER") }} {{ order_item.id }} от
+          {{ formatDate(order_item.date, "LL") }}
         </ion-label>
       </ion-row>
 
@@ -31,20 +31,20 @@
                 </ion-row>
                 <ion-row class="ion-margin-top">
                   <ion-label class="label"
-                    >{{ $t('SPHERE') }}
+                    >{{ $t("SPHERE") }}
                     <span class="text">{{ item.sphere.title }}</span></ion-label
                   >
                   <ion-label class="ion-margin-start label"
-                    >{{ $t('RADIUS') }}
+                    >{{ $t("RADIUS") }}
                     <span class="text">{{ item.radius.title }}</span></ion-label
                   >
                 </ion-row>
                 <ion-row class="ion-margin-top row-price">
                   <ion-label class="ion-margin-end price"
-                    >{{ item.product.price }} {{ $t('RUBLE-SIGN') }}</ion-label
+                    >{{ item.product.price }} {{ $t("RUBLE-SIGN") }}</ion-label
                   >
                   <ion-label class="ion-margin-end"
-                    >{{ item.count }} {{ $t('PACKAGING') }}</ion-label
+                    >{{ item.count }} {{ $t("PACKAGING") }}</ion-label
                   >
                 </ion-row>
               </ion-col>
@@ -55,35 +55,32 @@
 
       <ion-row class="ion-margin ion-align-items-center">
         <ion-col>
-          <ion-label class="text">{{ $t('ORDER-PRICE') }}</ion-label>
+          <ion-label class="text">{{ $t("ORDER-PRICE") }}</ion-label>
         </ion-col>
         <ion-col>
           <ion-label class="text-value"
-            >{{ order_item.total_discount }} {{ $t('RUBLE-SIGN') }}</ion-label
+            >{{ order_item.total_discount }} {{ $t("RUBLE-SIGN") }}</ion-label
           >
         </ion-col>
       </ion-row>
 
       <ion-row class="ion-margin ion-align-items-center">
         <ion-col>
-          <ion-label class="text">{{ $t('DELIVERY-METHOD') }}</ion-label>
+          <ion-label class="text">{{ $t("DELIVERY-METHOD") }}</ion-label>
         </ion-col>
         <ion-col>
           <ion-label v-if="!order_item.deliverTo" class="text-value">{{
-            $t('PICKUP')
+            $t("PICKUP")
           }}</ion-label>
           <ion-label v-if="order_item.deliverTo" class="text-value">
-            {{ $t('COURIER') }}</ion-label
+            {{ $t("COURIER") }}</ion-label
           >
         </ion-col>
       </ion-row>
 
-      <ion-row
-        class="ion-margin ion-align-items-center"
-        v-if="order_item.deliverTo"
-      >
+      <ion-row class="ion-margin ion-align-items-center" v-if="order_item.deliverTo">
         <ion-col>
-          <ion-label class="text">{{ $t('DELIVERY-ADDRESS') }}</ion-label>
+          <ion-label class="text">{{ $t("DELIVERY-ADDRESS") }}</ion-label>
         </ion-col>
         <ion-col>
           <ion-label class="text-value">
@@ -93,43 +90,31 @@
         </ion-col>
       </ion-row>
 
-      <Button
-        :title="$t('REPEAT-ORDER')"
-        class="repeat-button"
-        @click="repeatOrder"
-      />
-    </ion-content>
+      <Button :title="$t('REPEAT-ORDER')" class="repeat-button" @click="repeatOrder" />
+    </Content>
   </ion-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
-import {
-  IonPage,
-  IonContent,
-  IonRow,
-  IonCard,
-  IonCardContent,
-  IonCol,
-  IonLabel,
-} from '@ionic/vue';
-import Header from '@/components/ui/Header.vue';
-import Button from '@/components/ui/Button.vue';
-import { getOrderById } from '@/api/order';
-import { getProductById } from '@/api/products';
-import { formatDate } from '@/helpers/formatter';
-import { discountPrice } from '@/helpers/discountPrice';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import Badge from '@/components/ui/Badge.vue';
-import Loading from '@/components/ui/Loading.vue';
+import { defineComponent } from "vue";
+import { IonPage, IonRow, IonCard, IonCardContent, IonCol, IonLabel } from "@ionic/vue";
+import Header from "@/components/ui/Header.vue";
+import Button from "@/components/ui/Button.vue";
+import { getOrderById } from "@/api/order";
+import { getProductById } from "@/api/products";
+import { formatDate } from "@/helpers/formatter";
+import { discountPrice } from "@/helpers/discountPrice";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import Badge from "@/components/ui/Badge.vue";
+import Loading from "@/components/ui/Loading.vue";
+import Content from "@/components/ui/Content.vue";
 
 export default defineComponent({
-  name: 'OrderItemHistory',
+  name: "OrderItemHistory",
   components: {
     Badge,
     Header,
     IonPage,
-    IonContent,
     IonRow,
     IonCard,
     IonCardContent,
@@ -137,6 +122,7 @@ export default defineComponent({
     IonLabel,
     Button,
     Loading,
+    Content,
   },
   data() {
     return {
@@ -148,27 +134,26 @@ export default defineComponent({
     id() {
       return this.$route.params.id;
     },
-    ...mapGetters(['loading']),
+    ...mapGetters(["loading"]),
   },
   methods: {
-    ...mapActions(['getProduct']),
+    ...mapActions(["getProduct"]),
     ...mapMutations([
-      'SET_ORDER_PRODUCT_DETAILS',
-      'SET_BASKET_COUNT',
-      'SET_TOTAL_AMOUNT',
-      'SET_TOTAL_DISCOUNT',
-      'SET_LOADING',
-      'SET_PRODUCTS',
+      "SET_ORDER_PRODUCT_DETAILS",
+      "SET_BASKET_COUNT",
+      "SET_TOTAL_AMOUNT",
+      "SET_TOTAL_DISCOUNT",
+      "SET_LOADING",
+      "SET_PRODUCTS",
     ]),
     formatDate,
     imageHandler(image) {
       return image.length
         ? `${process.env.VUE_APP_API_PUBLIC}${image}`
-        : 'assets/image/no-image.png';
+        : "assets/image/no-image.png";
     },
     async repeatOrder() {
       this.SET_LOADING(true);
-      const products = [];
       this.order_item.order_product_details.map(async (el) => {
         const product = await getProductById(el.product.id);
 
@@ -187,15 +172,14 @@ export default defineComponent({
             discountPrice(product.price, product.discount ?? 0) * el.count,
         };
 
-        products.push(product);
+        this.SET_PRODUCTS(product);
         this.SET_ORDER_PRODUCT_DETAILS(a);
-        this.SET_LOADING(false);
       });
-      this.SET_PRODUCTS(products);
       this.SET_BASKET_COUNT();
       this.SET_TOTAL_AMOUNT();
       this.SET_TOTAL_DISCOUNT();
-      await this.$router.replace({ name: 'Basket' });
+      await this.$router.replace({ name: "Basket" });
+      this.SET_LOADING(false);
     },
   },
   async created() {

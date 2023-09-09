@@ -20,6 +20,7 @@ export interface Product {
   dominant?: Array<Dominants>;
   type?: string;
   categorie?: number | string;
+  categorie_id?: number | string;
 }
 
 // Image Interface to use in Frontend

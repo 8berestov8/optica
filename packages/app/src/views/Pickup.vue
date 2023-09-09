@@ -2,7 +2,7 @@
   <ion-page id="pickup">
     <Header :title="$t('CHECKOUT')" back />
     <Loading v-if="loading" />
-    <ion-content v-if="!loading">
+    <Content v-if="!loading" scroll>
       <ion-row class="ion-padding-top ion-padding-start ion-padding-end">
         <Segment
           :title-left="$t('PICKUP')"
@@ -162,7 +162,7 @@
           <ion-text class="text">{{ $t('REQUIRED-TEXT') }} </ion-text>
         </ion-row>
       </ion-list>
-    </ion-content>
+    </Content>
     <Popover :button-ok="$t('OK')" @handler="closePopover" />
   </ion-page>
 </template>
@@ -170,7 +170,6 @@
 <script lang="js">
 import {
   IonPage,
-  IonContent,
   IonRow,
   IonList,
   IonCard,
@@ -196,6 +195,7 @@ import {sendOrderDetails, sendOrder} from "@/api/order";
 import {updateAddress} from "@/api/address";
 import {formatDate} from "@/helpers/formatter";
 import moment from 'moment';
+import Content from '@/components/ui/Content.vue';
 
 
 export default {
@@ -210,7 +210,6 @@ export default {
     Segment,
     Header,
     IonPage,
-    IonContent,
     IonRow,
     IonList,
     IonCard,
@@ -220,7 +219,8 @@ export default {
     IonInput,
     IonCheckbox,
     IonText,
-    Loading
+    Loading,
+    Content
   },
   mounted() {
     this.fields.firstname = this.handlerUser.firstname;

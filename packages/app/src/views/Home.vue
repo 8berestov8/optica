@@ -1,7 +1,7 @@
 <template>
   <ion-page id="home">
     <Header :title="$t('NAME')" custom contact />
-    <ion-content :fullscreen="true">
+    <Content scroll>
       <Card
         class="pressed"
         :title="$t('ORDER-CARD-TITLE')"
@@ -21,20 +21,21 @@
         :slider_data="actions_news"
         @open-slide="toActionNews"
       />
-    </ion-content>
+    </Content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage } from '@ionic/vue';
 import Header from '@/components/ui/Header.vue';
 import Card from '@/components/ui/Card.vue';
-import { mapActions, mapGetters } from 'vuex';
+import Content from '@/components/ui/Content.vue';
+import { mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'Home',
-  components: { Card, Header, IonContent, IonPage },
+  components: { Card, Header, IonPage, Content },
   data() {
     return {};
   },
@@ -42,13 +43,9 @@ export default defineComponent({
     ...mapGetters(['actions_news']),
   },
   methods: {
-    ...mapActions(['getActionsNews']),
     toActionNews(id: any) {
       this.$router.push({ name: 'ActionsNews', params: { id: id } });
     },
-  },
-  mounted() {
-    this.getActionsNews();
   },
 });
 </script>
